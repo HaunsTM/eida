@@ -1,9 +1,7 @@
 import Vue from 'vue';
-import Vuetify from './vuetify';
+import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import sv from 'vuetify/src/locale/sv';
-
-Vue.use(Vuetify);
 
 export default new Vuetify({
     lang: {
@@ -11,3 +9,5 @@ export default new Vuetify({
       current: 'sv',
     },
 });
+
+Vue.use(Vuetify);

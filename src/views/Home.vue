@@ -7,12 +7,12 @@
 
 <script>
 // @ is an alias to /src
-import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue'
+import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue';
 
 export default {
   name: 'home',
   components: {
-    RestaurantsMealsDays
-  }
-}
+    RestaurantsMealsDays,
+  },
+};
 </script>
