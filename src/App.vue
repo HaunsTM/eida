@@ -35,11 +35,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
+import moment from 'moment';
 
-@Component({
-  
-})
-export default class App extends Vue {}
+@Component
+export default class App extends Vue {
+  // Lifecycle hook
+  async mounted () {
+    const result = await axios.get('https://api.sulten.se/menu/mealsPerAreaWeekYear/2/2/2020');
+    const i = 1
+  }
+}
 </script>
 
 <style>
