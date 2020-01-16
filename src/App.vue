@@ -57,7 +57,7 @@ export default class App extends Vue {
         return allAreas;
     }
     private async mealsPerAreaWeekYear(areaId: number, weekNumber: number, weekYear: number): Promise<Array<RestaurantMealDay>>  {
-
+debugger;
         const result = await axios.get(`${this.baseURL}/menu/mealsPerAreaWeekYear/${areaId}/${weekNumber}/${weekYear}`);
         const mealsPerAreaWeekYear: Array<RestaurantMealDay> = JSON.parse(JSON.stringify(result.data));
 
