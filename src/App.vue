@@ -6,10 +6,7 @@
     <nav>
       <!-- Start of app toolbar -->
       <v-toolbar app>
-        <v-toolbar-side-icon
-          @click.stop="drawer = !drawer"
-          class="hidden-md-and-up"
-        ></v-toolbar-side-icon>
+        
         <v-toolbar-title class="headline text-uppercase"
           >Vuetify Demo</v-toolbar-title
         >

@@ -1,12 +1,37 @@
 <template>
-   <v-tabs grow v-model="active_tab">
-     <v-tab
-      v-for="tab of tabs"
-      :key="tab.index"
-     >
-     {{tab.name}}
-     </v-tab>
-   </v-tabs>
+<v-tabs
+  background-color="transparent"
+  color="basil"
+  grow
+>
+  <v-tab>Tab 1</v-tab>
+  <v-tab>Tab 2</v-tab>
+  <v-tab>Tab 3</v-tab>
+
+  <v-tab-item>
+    <v-card flat color="basil">
+      <v-card-text>
+        First tab contents
+      </v-card-text>
+    </v-card>
+  </v-tab-item>
+  <v-tab-item>
+    <v-card flat color="basil">
+      <v-card-text>
+        Second tab contents
+      </v-card-text>
+    </v-card>
+  </v-tab-item>
+
+  <v-tab-item>
+    <v-card flat color="basil">
+      <v-card-text>
+        Third tab contents
+      </v-card-text>
+    </v-card>
+  </v-tab-item>
+
+</v-tabs>
 </template>
 
 <script lang="ts">
