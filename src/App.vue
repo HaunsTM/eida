@@ -35,16 +35,59 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Area } from './dto/repository/entities/Area';
+import { AreaRestaurants } from './dto/AreaRestaurants';
+import { RestaurantMeal } from './dto/RestaurantMeal';
+import { RestaurantMealDay } from './dto/RestaurantMealDay';
 import axios from 'axios';
 import moment from 'moment';
 
 @Component
 export default class App extends Vue {
-  // Lifecycle hook
-  async mounted () {
-    const result = await axios.get('https://api.sulten.se/menu/mealsPerAreaWeekYear/2/2/2020');
-    const i = 1
-  }
+
+    private readonly baseURL = 'https://api.sulten.se';
+
+    // Lifecycle hook
+    private async allAreas(): Promise<Array<Area>>  {
+
+            
+        const result = await axios.get(`${this.baseURL}/menu/allAreas`);
+        const allAreas: Array<Area> = JSON.parse(JSON.stringify(result.data));
+
+        return allAreas;
+    }
+    private async mealsPerAreaWeekYear(areaId: number, weekNumber: number, weekYear: number): Promise<Array<RestaurantMealDay>>  {
+
+        const result = await axios.get(`${this.baseURL}/menu/mealsPerAreaWeekYear/${areaId}/${weekNumber}/${weekYear}`);
+        const mealsPerAreaWeekYear: Array<RestaurantMealDay> = JSON.parse(JSON.stringify(result.data));
+
+        return mealsPerAreaWeekYear;
+    }
+    private async mealsPerAreaDayWeekYear(areaId: number, dayIndex: number, weekNumber: number, weekYear: number): Promise<Array<RestaurantMeal>>  {
+
+        const result = await axios.get(`${this.baseURL}/menu//mealsPerAreaDayWeekYear/${areaId}/${dayIndex}/${weekNumber}/${weekYear}`);
+        const mealsPerAreaDayWeekYear: Array<RestaurantMeal> = JSON.parse(JSON.stringify(result.data));
+
+        return mealsPerAreaDayWeekYear;
+    }
+    private async restaurantsPerArea(areaId: number): Promise<Array<AreaRestaurants>>  {
+
+        const result = await axios.get(`${this.baseURL}/menu/restaurantsPerArea/${areaId}`);
+        const restaurantsPerArea: Array<AreaRestaurants> = JSON.parse(JSON.stringify(result.data));
+
+        return restaurantsPerArea;
+    }
+
+    async mounted () {
+    const allAreas = await this.allAreas();
+    const mealsPerAreaWeekYear = await this.mealsPerAreaWeekYear(2,3,2020);
+    const mealsPerAreaDayWeekYear = await this.mealsPerAreaDayWeekYear(2,5,3,2020);
+    const restaurantsPerArea = await this.restaurantsPerArea(2);
+
+
+    debugger;
+    const i = 1;
+    }
 }
 </script>
 
