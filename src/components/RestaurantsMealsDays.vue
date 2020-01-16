@@ -40,14 +40,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class RestaurantsMealsDays extends Vue {
     @Prop() private msg!: string;
-    data: any = () => ({
-      active_tab: 2,
-      tabs: [
-        { index: 0, name: 'tab1' },
-        { index: 1, name: 'tab2' },
-        { index: 2, name: 'tab3' },
-      ],
-    })
+    
 }
 </script>
 
