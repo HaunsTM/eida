@@ -65,7 +65,7 @@ debugger;
     }
     private async mealsPerAreaDayWeekYear(areaId: number, dayIndex: number, weekNumber: number, weekYear: number): Promise<Array<RestaurantMeal>>  {
 
-        const result = await axios.get(`${this.baseURL}/menu//mealsPerAreaDayWeekYear/${areaId}/${dayIndex}/${weekNumber}/${weekYear}`);
+        const result = await axios.get(`${this.baseURL}/menu/mealsPerAreaDayWeekYear/${areaId}/${dayIndex}/${weekNumber}/${weekYear}`);
         const mealsPerAreaDayWeekYear: Array<RestaurantMeal> = JSON.parse(JSON.stringify(result.data));
 
         return mealsPerAreaDayWeekYear;
