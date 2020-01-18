@@ -5,44 +5,7 @@
             v-model="showMenu"
             app
             >
-            <v-list dense>
-                <v-list-item-group
-                    v-model="selectedAreas"
-                    multiple
-                >
-                    <v-list-item>
-                        <v-list-item-action>
-                            <v-icon>mdi-chef-hat</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Område</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <template v-for="(item, i) in allAreas">
-
-                        <v-list-item
-                            :key="item.id"
-                            :value="item"
-                            active-class="deep-purple--text text--accent-4"
-                        >
-                            <template v-slot:default="{ active, toggle }">
-                                <v-list-item-content>
-                                    <v-list-item-title v-text="item.name"></v-list-item-title>
-                                </v-list-item-content>
-
-                                <v-list-item-action>
-                                    <v-checkbox
-                                        :input-value="active"
-                                        :true-value="item"
-                                        color="deep-purple accent-4"
-                                        @click="toggle"
-                                    ></v-checkbox>
-                                </v-list-item-action>
-                            </template>
-                        </v-list-item>
-                    </template>
-                </v-list-item-group>
-            </v-list>
+            <AreasListDrawer v-bind:allAreas="allAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
 
         </v-navigation-drawer>
 
@@ -86,24 +49,24 @@
 
 <script lang="ts">
 import { Area } from './dto/repository/entities/Area';
+import AreasListDrawer from './components/AreasListDrawer.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import DataService from './api/DataService';
 import moment from 'moment';
 
-@Component
-export default class App extends Vue {
+@Component({
+  components: {
+    AreasListDrawer
+  }
+})export default class App extends Vue {
     allAreas: Array<Area> = new Array<Area>();
     selectedAreas: Array<Area> = new Array<Area>();
     showMenu: boolean = false;
-
+    
     toggleMenu(): void {
       this.showMenu = !this.showMenu;
     }
-    data() {
-        return {
 
-        }
-  }
     private currentWeekNumber(): number {
         const currentWeekNumber = moment().isoWeek();
 
@@ -119,6 +82,10 @@ export default class App extends Vue {
 
 
         const i = 1;
+    }
+    updateSelectedAreas(selectedAreas: Array<Area>) {
+        // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b
+        this.selectedAreas = selectedAreas;
     }
 }
 </script>
