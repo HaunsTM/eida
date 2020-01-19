@@ -19,19 +19,9 @@
     </v-app-bar>
 
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="text-center">
-              {{selectedAreas}}
-          </v-col>
-        </v-row>
-      </v-container>
+        <!-- route outlet -->
+        <!-- component matched by the route will render here -->
+        <router-view></router-view>
     </v-content>
 
     <v-footer
@@ -41,7 +31,7 @@
         <span class="white--text">sulten.se - 2020</span>
     </v-footer>
 
-  </v-app>
+    </v-app>
 
     
   </div>
@@ -53,12 +43,14 @@ import AreasListDrawer from './components/AreasListDrawer.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import DataService from './api/DataService';
 import moment from 'moment';
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 @Component({
   components: {
     AreasListDrawer
   }
-})export default class App extends Vue {
+})
+export default class App extends Vue {
     allAreas: Array<Area> = new Array<Area>();
     selectedAreas: Array<Area> = new Array<Area>();
     showMenu: boolean = false;
@@ -80,13 +72,27 @@ import moment from 'moment';
         const mealsPerAreaDayWeekYear = await ds.mealsPerAreaDayWeekYear(2, 5, 3, 2020);
         const restaurantsPerArea = await ds.restaurantsPerArea(2);
 
-
+        this.$store.commit('setRestaurantsMealsDays', mealsPerAreaWeekYear)
         const i = 1;
     }
     updateSelectedAreas(selectedAreas: Array<Area>) {
         // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b
         this.selectedAreas = selectedAreas;
+
     }
+
+    /*
+    get selectedAreas(): Array<Area> {
+        const tempSelectedAreas = localStorage.getItem('selectedAreas');
+        const selectedAreas = tempSelectedAreas ? JSON.parse(tempSelectedAreas) : new Array<Area>();
+        debugger;
+        return selectedAreas;
+    }
+    set selectedAreas(value: Array<Area>) {
+        localStorage.setItem('selectedAreas', JSON.stringify(value));
+    }
+    */
+   
 }
 </script>
 

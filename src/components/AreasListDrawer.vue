@@ -53,7 +53,6 @@ export default class AreasListDrawer extends Vue {
         return this.selectedAreas;
     }
     set internalSelectedAreas(value: Array<Area>) {
-        debugger;
         this.$emit("update-selected-areas", value);
     }
 

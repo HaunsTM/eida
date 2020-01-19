@@ -1,18 +1,34 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <RestaurantsMealsDays msg="Welcome to Your Vue.js App"/>
+    <RestaurantsMealsDays v-bind:mealsPerAreaWeekYear="internalMealsPerAreaWeekYear" v-bind:currentWeekdayIndex="internalCurrentWeekdayIndex"/>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
+import { RestaurantMealDay } from '../dto/RestaurantMealDay';
 import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import moment from 'moment';
 
-export default {
-  name: 'home',
+@Component({
   components: {
-    RestaurantsMealsDays,
-  },
+    RestaurantsMealsDays
+  }
+})
+export default class Home extends Vue {
+
+    
+    get internalMealsPerAreaWeekYear(): Array<RestaurantMealDay> {
+        const internalMealsPerAreaWeekYear = this.$store.state.currentRestaurantsMealsDays;
+        return  internalMealsPerAreaWeekYear;
+    }
+
+    get internalCurrentWeekdayIndex(): number {
+        const currentWeekNumber = moment().isoWeek();
+
+        return currentWeekNumber;
+    }
+
 };
 </script>
