@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentRestaurantsMealsDays: new Array<RestaurantMealDay>(),
+    currentRestaurantsMealsDays: new Array<RestaurantMealsDay>(),
   },
   mutations: {
-    setRestaurantsMealsDays(state, current: RestaurantMealDay[] )  {
+    setRestaurantsMealsDays(state, current: RestaurantMealsDay[] )  {
         state.currentRestaurantsMealsDays = current;
     },
   },

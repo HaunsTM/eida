@@ -2,7 +2,7 @@
 import { Area } from '../dto/repository/entities/Area';
 import { AreaRestaurants } from '../dto/AreaRestaurants';
 import { RestaurantMeal } from '../dto/RestaurantMeal';
-import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import axios from 'axios';
 
 export default class DataService {
@@ -18,10 +18,10 @@ export default class DataService {
         return allAreas;
     }
     public async mealsPerAreaWeekYear(
-        areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealDay[]>  {
+        areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealsDay[]>  {
 
         const result = await axios.get(`${this.baseURL}/menu/mealsPerAreaWeekYear/${areaId}/${weekNumber}/${weekYear}`);
-        const mealsPerAreaWeekYear: RestaurantMealDay[] = JSON.parse(JSON.stringify(result.data));
+        const mealsPerAreaWeekYear: RestaurantMealsDay[] = JSON.parse(JSON.stringify(result.data));
 
         return mealsPerAreaWeekYear;
     }

@@ -6,7 +6,7 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import moment from 'moment';
@@ -19,7 +19,7 @@ import moment from 'moment';
 export default class Home extends Vue {
 
     
-    get internalMealsPerAreaWeekYear(): Array<RestaurantMealDay> {
+    get internalMealsPerAreaWeekYear(): Array<RestaurantMealsDay> {
         const internalMealsPerAreaWeekYear = this.$store.state.currentRestaurantsMealsDays;
         return  internalMealsPerAreaWeekYear;
     }

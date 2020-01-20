@@ -12,7 +12,24 @@
         {{tab.name}}
     </v-tab>
 
-  <v-tab-item>
+  <v-tab-item
+        v-for="internalMealsPerAreaWeekYear of internalMealsPerAreaWeekYear"
+        :key="tab.index">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     <v-card flat color="basil">
       <v-card-text>
         {{internalMealsPerAreaWeekYear}}
@@ -27,7 +44,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import RestaurantDish from './RestaurantDish.vue';
 
 
@@ -38,7 +55,7 @@ import RestaurantDish from './RestaurantDish.vue';
 })
 export default class RestaurantsMealsDays extends Vue {
  
-    @Prop({default: new Array<RestaurantMealDay>()}) mealsPerAreaWeekYear!: Array<RestaurantMealDay>;
+    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: Array<RestaurantMealsDay>;
     @Prop({default: -1}) currentWeekdayIndex!: number;
 
     readonly tabs = [
@@ -52,7 +69,7 @@ export default class RestaurantsMealsDays extends Vue {
         { index: 6, name: 'Söndag', weekDayIndex: 0 },
       ];
     activeTab: number = 1;
-    get internalMealsPerAreaWeekYear(): Array<RestaurantMealDay> {
+    get internalMealsPerAreaWeekYear(): Array<RestaurantMealsDay> {
         const internalMealsPerAreaWeekYear = this.mealsPerAreaWeekYear;
         return  internalMealsPerAreaWeekYear;
     }

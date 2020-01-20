@@ -1,6 +1,6 @@
 import { AlternativeLabelDishPriceDay } from './AlternativeLabelDishPriceDay';
 
-export class RestaurantMealDay {
+export class RestaurantMealsDay {
 
     public restaurantName: string;
     public restaurantMenuUrl: string;
