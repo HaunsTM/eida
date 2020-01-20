@@ -15,7 +15,7 @@
   <v-tab-item>
     <v-card flat color="basil">
       <v-card-text>
-        First tab contents
+        {{internalMealsPerAreaWeekYear}}
       </v-card-text>
     </v-card>
   </v-tab-item>
@@ -36,14 +36,14 @@ export default class RestaurantsMealsDays extends Vue {
 
 
     readonly tabs = [
-        { index: 1, name: 'Måndag', weekDayIndex: 1 },
-        { index: 2, name: 'Tisdag', weekDayIndex: 2 },
-        { index: 3, name: 'Onsdag', weekDayIndex: 3 },
-        { index: 4, name: 'Torsdag', weekDayIndex: 4 },
-        { index: 5, name: 'Fredag', weekDayIndex: 5 },
+        { index: 0, name: 'Måndag', weekDayIndex: 1 },
+        { index: 1, name: 'Tisdag', weekDayIndex: 2 },
+        { index: 2, name: 'Onsdag', weekDayIndex: 3 },
+        { index: 3, name: 'Torsdag', weekDayIndex: 4 },
+        { index: 4, name: 'Fredag', weekDayIndex: 5 },
 
-        { index: 6, name: 'Lördag', weekDayIndex: 6 },
-        { index: 7, name: 'Söndag', weekDayIndex: 0 },
+        { index: 5, name: 'Lördag', weekDayIndex: 6 },
+        { index: 6, name: 'Söndag', weekDayIndex: 0 },
       ];
     activeTab: number = 1;
     get internalMealsPerAreaWeekYear(): Array<RestaurantMealDay> {
@@ -56,13 +56,18 @@ export default class RestaurantsMealsDays extends Vue {
 
         return internalCurrentWeekdayIndex;
     }
+
     get defaultTabIndex(): number {
-        const initialTab = this.tabs.find( (t) => { return t.weekDayIndex === this.internalCurrentWeekdayIndex } );
+        const internalCurrentWeekdayIndex = this.internalCurrentWeekdayIndex;
+        const initialTab = this.tabs.find( (t) => {
+            const foundCurrentTab = t.weekDayIndex === internalCurrentWeekdayIndex;
+            return foundCurrentTab;
+        } );
         const initialTabIndex = initialTab ? initialTab.index : 0;
-debugger;
+
         return initialTabIndex;
     }
-    beforeCreate() {
+    mounted() {
         this.activeTab = this.defaultTabIndex;
     }
 

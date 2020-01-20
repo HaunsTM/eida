@@ -25,7 +25,7 @@ export default class Home extends Vue {
     }
 
     get internalCurrentWeekdayIndex(): number {
-        const currentWeekNumber = moment().isoWeek();
+        const currentWeekNumber = moment().weekday();
 
         return currentWeekNumber;
     }
