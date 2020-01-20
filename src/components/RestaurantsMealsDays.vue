@@ -16,10 +16,11 @@
     <v-card flat color="basil">
       <v-card-text>
         {{internalMealsPerAreaWeekYear}}
+        
+  <RestaurantDish />
       </v-card-text>
     </v-card>
   </v-tab-item>
-  
 
 </v-tabs>
 </template>
@@ -27,13 +28,18 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import RestaurantDish from './RestaurantDish.vue';
 
-@Component
+
+@Component({
+  components: {
+    RestaurantDish
+  }
+})
 export default class RestaurantsMealsDays extends Vue {
  
     @Prop({default: new Array<RestaurantMealDay>()}) mealsPerAreaWeekYear!: Array<RestaurantMealDay>;
     @Prop({default: -1}) currentWeekdayIndex!: number;
-
 
     readonly tabs = [
         { index: 0, name: 'Måndag', weekDayIndex: 1 },
