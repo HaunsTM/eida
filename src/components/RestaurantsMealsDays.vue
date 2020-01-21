@@ -1,43 +1,44 @@
 <template>
-<v-tabs
-  background-color="transparent"
-  color="basil"
-  grow
-  v-model="activeTab"
->
-    <v-tab
-        v-for="tabDay of tabsDays"
-        :key="tabDay.index"
-    >
-        {{tabDay.name}}
-    </v-tab>
+    <v-tabs
+    background-color="transparent"
+    color="basil"
+    grow
+    v-model="activeTab">
+        <v-tab
+            v-for="tabDay of tabsDays"
+            :key="tabDay.index">
+            {{tabDay.name}}
+        </v-tab>
 
-    <v-tab-item 
-        v-for="tabDay of tabsDays"
-        :key="tabDay.index">
+        <v-tab-item 
+            v-for="tabDay of tabsDays"
+            :key="tabDay.index">
 
-    <v-card flat color="basil">
-      <v-card-text>
-        <p>{{mealsPerDay(tabDay.weekDayIndex)}}</p>
-        
-  
-      </v-card-text>
-    </v-card>
-  </v-tab-item>
+            <v-card flat color="basil" 
+                v-for = "areaRestaurantsDishes in testAreasRestaurantsDishes(tabDay.weekDayIndex)"
+                :key = "areaRestaurantsDishes.area.id">
+                
+                <v-card-title class="headline">{{areaRestaurantsDishes.area.name}}</v-card-title>
 
-</v-tabs>
+                <RestaurantsDishes :restaurantsMealsDay="restaurantsMealsDay(tabDay.weekDayIndex)"/>
+            </v-card>
+
+        </v-tab-item>
+
+    </v-tabs>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import RestaurantDish from './RestaurantDish.vue';
-import { RestaurantMeal } from '../dto/RestaurantMeal';
+import RestaurantsDishes from './RestaurantsDishes.vue';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
+import { AreaRestaurantsDishes } from '@/models/AreaRestaurantsMeals';
+import { Area } from '../dto/repository/entities/Area';
 
 
 @Component({
   components: {
-    RestaurantDish
+    RestaurantsDishes
   }
 }) 
 export default class RestaurantsMealsDays extends Vue {
@@ -60,8 +61,8 @@ export default class RestaurantsMealsDays extends Vue {
         const internalMealsPerAreaWeekYear = this.mealsPerAreaWeekYear;
         return  internalMealsPerAreaWeekYear;
     }
-    private mealsPerDay(weekDayIndex: number): Array<RestaurantMealsDay> {
-        const mealsPerDay = this.internalMealsPerAreaWeekYear
+    private restaurantsMealsDay(weekDayIndex: number): Array<RestaurantMealsDay> {
+        const restaurantsMealsDay = this.internalMealsPerAreaWeekYear
             .map( (r) => {
                 const mealsPerDayAndRestaurant =
                     new RestaurantMealsDay(
@@ -78,7 +79,7 @@ export default class RestaurantsMealsDays extends Vue {
                 return restaurantHasMealsThisDay;
             });
 
-        return mealsPerDay;
+        return restaurantsMealsDay;
     }
     private get internalCurrentWeekdayIndex(): number {
         const internalCurrentWeekdayIndex = this.currentWeekdayIndex;
@@ -100,6 +101,9 @@ export default class RestaurantsMealsDays extends Vue {
         this.activeTab = this.defaultTabIndex;
     }
     
+    private testAreasRestaurantsDishes(weekDayIndex: number): AreaRestaurantsDishes[] {
+        return [new AreaRestaurantsDishes( new Area(1, "Malmö"), this.restaurantsMealsDay(weekDayIndex))];
+    }
 
 }
 </script>

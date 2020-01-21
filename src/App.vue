@@ -1,40 +1,44 @@
 <template>
   <div id="app">
-    <v-app id="inspire">
-        <v-navigation-drawer
-            v-model="showMenu"
-            app
-            >
-            <AreasListDrawer v-bind:allAreas="allAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
+        <v-app id="inspire">
 
-        </v-navigation-drawer>
+            <v-navigation-drawer
+                v-model="showMenu"
+                app>
+                <AreasListDrawer v-bind:allAreas="allAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
 
-    <v-app-bar
-      app
-      color="indigo"
-      dark
-    >
-      <v-app-bar-nav-icon @click.stop="toggleMenu" />
-      <v-toolbar-title>Välkommen till sulten.se</v-toolbar-title>
-    </v-app-bar>
+            </v-navigation-drawer>
 
-    <v-content>
-        <!-- route outlet -->
-        <!-- component matched by the route will render here -->
-        <router-view></router-view>
-    </v-content>
+            <v-app-bar
+                app
+                color="indigo"
+                dark>
+                <v-app-bar-nav-icon @click.stop="toggleMenu" />
+                <v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title>
+            </v-app-bar>
+            
+            <!-- Sizes your content based upon application components -->
+            <v-content>
 
-    <v-footer
-        color="indigo"
-        app
-        >
-        <span class="white--text">sulten.se - 2020</span>
-    </v-footer>
+                <!-- Provides the application the proper gutter -->
+                <v-container fluid>
 
-    </v-app>
+                    <!-- If using vue-router -->
+                    <router-view></router-view>
 
-    
-  </div>
+                </v-container>
+
+            </v-content>
+
+            <v-footer
+                color="indigo"
+                app>
+                <span class="white--text">sulten.se - 2020</span>
+            </v-footer>
+
+        </v-app>
+
+    </div>
 </template>
 
 <script lang="ts">
