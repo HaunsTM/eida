@@ -55,7 +55,7 @@ export default class App extends Vue {
     selectedAreas: Array<Area> = new Array<Area>();
     showMenu: boolean = false;
     
-    toggleMenu(): void {
+    private toggleMenu(): void {
       this.showMenu = !this.showMenu;
     }
 
@@ -65,7 +65,7 @@ export default class App extends Vue {
         return currentWeekNumber;
     }
 
-    async beforeCreate() {
+    private async beforeCreate() {
         const ds = new DataService();
         this.allAreas = await ds.allAreas();
         const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, 3, 2020);
@@ -75,7 +75,7 @@ export default class App extends Vue {
         this.$store.commit('setRestaurantsMealsDays', mealsPerAreaWeekYear)
         const i = 1;
     }
-    updateSelectedAreas(selectedAreas: Array<Area>) {
+    private updateSelectedAreas(selectedAreas: Array<Area>) {
         // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b
         this.selectedAreas = selectedAreas;
 

@@ -17,7 +17,7 @@ import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 @Component
 export default class RestaurantDish extends Vue {
     @Prop() restaurantMealsDay!: RestaurantMealsDay;
-    
+
       headers = [
         {
           text: 'Dessert (100g serving)',
