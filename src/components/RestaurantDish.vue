@@ -12,11 +12,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { RestaurantMealDay } from '../dto/RestaurantMealDay';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 
 @Component
 export default class RestaurantDish extends Vue {
-    @Prop() restaurantMealDay!: RestaurantMealDay;
+    @Prop() restaurantMealsDay!: RestaurantMealsDay;
     
       headers = [
         {

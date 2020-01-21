@@ -6,35 +6,21 @@
   v-model="activeTab"
 >
     <v-tab
-        v-for="tab of tabs"
-        :key="tab.index"
+        v-for="tabDay of tabsDays"
+        :key="tabDay.index"
     >
-        {{tab.name}}
+        {{tabDay.name}}
     </v-tab>
 
-  <v-tab-item
-        v-for="internalMealsPerAreaWeekYear of internalMealsPerAreaWeekYear"
-        :key="tab.index">
+    <v-tab-item 
+        v-for="tabDay of tabsDays"
+        :key="tabDay.index">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     <v-card flat color="basil">
       <v-card-text>
-        {{internalMealsPerAreaWeekYear}}
+        <p>{{mealsPerDay(tabDay.weekDayIndex)}}</p>
         
-  <RestaurantDish />
+  
       </v-card-text>
     </v-card>
   </v-tab-item>
@@ -44,8 +30,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import RestaurantDish from './RestaurantDish.vue';
+import { RestaurantMeal } from '../dto/RestaurantMeal';
+import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 
 
 @Component({
@@ -58,7 +45,7 @@ export default class RestaurantsMealsDays extends Vue {
     @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: Array<RestaurantMealsDay>;
     @Prop({default: -1}) currentWeekdayIndex!: number;
 
-    readonly tabs = [
+    readonly tabsDays = [
         { index: 0, name: 'Måndag', weekDayIndex: 1 },
         { index: 1, name: 'Tisdag', weekDayIndex: 2 },
         { index: 2, name: 'Onsdag', weekDayIndex: 3 },
@@ -73,7 +60,26 @@ export default class RestaurantsMealsDays extends Vue {
         const internalMealsPerAreaWeekYear = this.mealsPerAreaWeekYear;
         return  internalMealsPerAreaWeekYear;
     }
+    mealsPerDay(weekDayIndex: number): Array<RestaurantMealsDay> {
+        const mealsPerDay = this.internalMealsPerAreaWeekYear
+            .map( (x) => {
+                const mealsPerDayAndRestaurant =
+                    new RestaurantMealsDay(
+                        x.restaurantName,
+                        x.restaurantMenuUrl,
+                        x.alternativeLabelDishPrices
+                            .filter( (x) => { const correctDay = x.dayIndex === weekDayIndex;
+                                return correctDay;
+                            })
+                    );
+                return mealsPerDayAndRestaurant; })
+            .filter( (x) => {
+                const restaurantHasMealsThisDay = x.alternativeLabelDishPrices.length > 0;
+                return restaurantHasMealsThisDay;
+            });
 
+        return mealsPerDay;
+    }
     get internalCurrentWeekdayIndex(): number {
         const internalCurrentWeekdayIndex = this.currentWeekdayIndex;
 
@@ -82,7 +88,7 @@ export default class RestaurantsMealsDays extends Vue {
 
     get defaultTabIndex(): number {
         const internalCurrentWeekdayIndex = this.internalCurrentWeekdayIndex;
-        const initialTab = this.tabs.find( (t) => {
+        const initialTab = this.tabsDays.find( (t) => {
             const foundCurrentTab = t.weekDayIndex === internalCurrentWeekdayIndex;
             return foundCurrentTab;
         } );
@@ -93,6 +99,7 @@ export default class RestaurantsMealsDays extends Vue {
     mounted() {
         this.activeTab = this.defaultTabIndex;
     }
+    
 
 }
 </script>
