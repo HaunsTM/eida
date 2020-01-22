@@ -14,8 +14,7 @@
                 color="indigo"
                 dark>
                 <v-app-bar-nav-icon @click.stop="toggleMenu" />
-                <v-toolbar-title>**PROTOTYP** Västra Hamnen {{currentWeekNumber}}</v-toolbar-title>
-                <!--<v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title> -->
+                <v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title>
             </v-app-bar>
             
             <!-- Sizes your content based upon application components -->
@@ -23,16 +22,16 @@
 
                 <!-- Provides the application the proper gutter -->
                 <v-container fluid>
-<!--
+
                     <div v-if="userHasAllowedLocalStorage">
- -->
+
                         <router-view></router-view>
-<!--
+
                     </div>
                     <div v-else>
                         <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
                     </div>
- -->
+
 
                 </v-container>
 
@@ -41,7 +40,7 @@
             <v-footer
                 color="indigo"
                 app>
-                <span class="white--text">sulten.se - 2020</span>
+                <span class="white--text">Ät med sulten.se - vecka {{currentWeekNumber}} - {{currentYear}}</span>
             </v-footer>
 
         </v-app>
@@ -75,6 +74,12 @@ export default class App extends Vue {
 
     private get currentWeekNumber(): number {
         const currentWeekNumber = moment().isoWeek();
+
+        return currentWeekNumber;
+    }
+
+    private get currentYear(): number {
+        const currentWeekNumber = moment().year();
 
         return currentWeekNumber;
     }
