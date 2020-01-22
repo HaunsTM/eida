@@ -1,18 +1,27 @@
 <template>
     <section>
-      {{restaurantsMealsDay}}
         <article
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
             v-bind:key="restaurantMealsDay.restaurantMenuUrl">
 
-            <h1>{{loopIndex}} - {{restaurantMealsDay.restaurantName}}</h1>
             <v-data-table 
                 :headers="headers" 
-                :items="desserts" 
+                :items="restaurantMeals(loopIndex)" 
                 hide-default-footer
                 item-key="name" 
-                group-key="category" 
+                group-key="restaurantName"
+                disable-pagination
                 group-expanded>
+                
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>
+                        <a :href="restaurantMealsDay.restaurantMenuUrl" target="_blank">
+                            {{ restaurantMealsDay.restaurantName }}
+                        </a>
+                    </v-toolbar-title>
+                </v-toolbar>
+            </template>
 
 
             <template slot="items" slot-scope="props">
@@ -25,7 +34,6 @@
 
           </v-data-table>
 
-            
         </article>
     </section>
 
@@ -34,6 +42,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
+import { RestaurantMeal } from '../models/RestaurantMeal';
+import { AlternativeLabelDishPrice } from '../dto/AlternativeLabelDishPrice';
 
 @Component
 export default class RestaurantsDishes extends Vue {
@@ -44,29 +54,52 @@ export default class RestaurantsDishes extends Vue {
         { text: "Rätt", value: "dishDescription" },
         { text: "Pris (kr)", value: "priceSEK" },
       ];
-        private readonly desserts = [
-        {
-          value: false,
-          category: "Kolga",
-          labelName: "Dagens",
-          dishDescription: "Rotmos",
-          priceSEK: 100,
-        },
-        {
-          value: false,
-          category: "Kolga",
-          labelName: "Vegetariskt",
-          dishDescription: "Rotmos",
-          priceSEK: 95,
-        },
-        {
-          value: false,
-          category: "MMH",
-          labelName: "Vegetariskt",
-          dishDescription: "Sallad",
-          priceSEK: 95,
-        },
-      ];
+
+      private get sortedRestaurantMeals(): RestaurantMealsDay[] {
+        const sortedRestaurantMeals =
+            this.restaurantsMealsDay
+            .sort((a, b) => {
+                if (a.restaurantName < b.restaurantName)
+                    return -1;
+                if (a.restaurantName > b.restaurantName)
+                    return 1;
+                return 0;
+            })
+            .map( (r) => {
+
+                const sortedAlternativeLabelDishPrices = r.alternativeLabelDishPrices.sort((a, b) => {
+                    if (a.labelName < b.labelName)
+                        return -1;
+                    if (a.labelName > b.labelName)
+                        return 1;
+                    return 0;
+                });
+
+                r.alternativeLabelDishPrices = sortedAlternativeLabelDishPrices;
+                return r;
+            })
+        return sortedRestaurantMeals;
+      }
+
+      private restaurantMeals(restaurantListIndex: number): RestaurantMeal[] {
+
+        const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
+        const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
+        const restaurantMeals =
+          this.sortedRestaurantMeals[restaurantListIndex].alternativeLabelDishPrices.map( (d) => {
+            // RestaurantMeal
+            const value = false;
+            const restaurantMeal =
+                new RestaurantMeal(
+                    value,
+                    restaurantName, restaurantMenuUrl,
+                    new AlternativeLabelDishPrice(
+                    d.indexNumber, d.labelName, d.dishDescription, d.priceSEK)
+                );
+            return restaurantMeal
+        });
+        return restaurantMeals;
+      }
 }
 </script>
 
