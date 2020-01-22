@@ -1,9 +1,10 @@
 <template>
     <v-tabs
-    background-color="transparent"
-    color="basil"
-    grow
-    v-model="activeTab">
+        background-color="transparent"
+        color="basil"
+        grow
+        v-model="activeTab">
+        
         <v-tab
             v-for="tabDay of tabsDays"
             :key="tabDay.index">

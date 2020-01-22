@@ -1,8 +1,17 @@
 <template>
     <section>
-        <article
+        <v-card
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-            v-bind:key="restaurantMealsDay.restaurantMenuUrl">
+            v-bind:key="restaurantMealsDay.restaurantMenuUrl"
+    class="mx-auto"
+    max-width="500">
+
+            <v-card-title>
+                <a :href="restaurantMealsDay.restaurantMenuUrl" target="_blank" 
+                    class="hide-link-style grey--text text--darken-1">
+                    {{ restaurantMealsDay.restaurantName }}
+                </a>
+            </v-card-title>
 
             <v-data-table 
                 :headers="headers" 
@@ -11,30 +20,20 @@
                 item-key="name" 
                 group-key="restaurantName"
                 disable-pagination
+                disable-sort
                 group-expanded>
-                
-            <template v-slot:top>
-                <v-toolbar flat>
-                    <v-toolbar-title>
-                        <a :href="restaurantMealsDay.restaurantMenuUrl" target="_blank">
-                            {{ restaurantMealsDay.restaurantName }}
-                        </a>
-                    </v-toolbar-title>
-                </v-toolbar>
-            </template>
 
+                <template slot="items" slot-scope="props">
+                    <tr>
+                        <td>{{ props.item.labelName }}</td>
+                        <td>{{ props.item.dishDescription }}</td>
+                        <td>{{ props.item.priceSEK }}</td>
+                    </tr>
+                </template>
 
-            <template slot="items" slot-scope="props">
-              <tr>
-                <td>{{ props.item.labelName }}</td>
-                <td>{{ props.item.dishDescription }}</td>
-                <td>{{ props.item.priceSEK }}</td>
-              </tr>
-            </template>
+            </v-data-table>
 
-          </v-data-table>
-
-        </article>
+        </v-card>
     </section>
 
 </template>
@@ -94,7 +93,7 @@ export default class RestaurantsDishes extends Vue {
                     value,
                     restaurantName, restaurantMenuUrl,
                     new AlternativeLabelDishPrice(
-                    d.indexNumber, d.labelName, d.dishDescription, d.priceSEK)
+                    d.indexNumber, d.labelName, d.dishDescription, +d.priceSEK)
                 );
             return restaurantMeal
         });
@@ -105,5 +104,7 @@ export default class RestaurantsDishes extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .hide-link-style {
+        text-decoration: none;
+    }
 </style>

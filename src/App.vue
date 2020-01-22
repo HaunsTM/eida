@@ -23,8 +23,15 @@
                 <!-- Provides the application the proper gutter -->
                 <v-container fluid>
 
-                    <!-- If using vue-router -->
-                    <router-view></router-view>
+                    <div v-if="userHasAllowedLocalStorage">
+
+                        <router-view></router-view>
+
+                    </div>
+                    <div v-else>
+                        <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
+                    </div>
+
 
                 </v-container>
 
@@ -46,12 +53,14 @@ import { Area } from './dto/repository/entities/Area';
 import AreasListDrawer from './components/AreasListDrawer.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import DataService from './api/DataService';
+import LocalStorageInfo from './components/LocalStorageInfo.vue';
 import moment from 'moment';
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 @Component({
   components: {
-    AreasListDrawer
+    AreasListDrawer,
+    LocalStorageInfo,
   }
 })
 export default class App extends Vue {
@@ -72,7 +81,7 @@ export default class App extends Vue {
     private async beforeCreate() {
         const ds = new DataService();
         this.allAreas = await ds.allAreas();
-        const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, 3, 2020);
+        const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, 4, 2020);
         const mealsPerAreaDayWeekYear = await ds.mealsPerAreaDayWeekYear(2, 5, 3, 2020);
         const restaurantsPerArea = await ds.restaurantsPerArea(2);
 
@@ -85,6 +94,15 @@ export default class App extends Vue {
 
     }
 
+    private get userHasAllowedLocalStorage(): boolean {
+        debugger;
+        return localStorage.userHasAllowedLocalStorage;
+    }
+    private onUserHasAllowedLocalStorage(value: boolean): void {
+        debugger;
+        localStorage.userHasAllowedLocalStorage = value;        
+        this.$forceUpdate();
+    }
     /*
     get selectedAreas(): Array<Area> {
         const tempSelectedAreas = localStorage.getItem('selectedAreas');
