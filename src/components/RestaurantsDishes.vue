@@ -1,10 +1,11 @@
 <template>
     <section>
+      {{restaurantsMealsDay}}
         <article
-            v-for="restaurantMealsDay in restaurantsMealsDay"
+            v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
             v-bind:key="restaurantMealsDay.restaurantMenuUrl">
 
-            <h1>{{restaurantMealsDay.restaurantName}}</h1>
+            <h1>{{loopIndex}} - {{restaurantMealsDay.restaurantName}}</h1>
             <v-data-table 
                 :headers="headers" 
                 :items="desserts" 
@@ -13,11 +14,6 @@
                 group-key="category" 
                 group-expanded>
 
-            <template slot="group" slot-scope="props">
-              <span class="font-weight-bold">
-                Group {{props.groupIndex + 1}} - {{props.groupName}}
-              </span>
-            </template>
 
             <template slot="items" slot-scope="props">
               <tr>
@@ -48,7 +44,7 @@ export default class RestaurantsDishes extends Vue {
         { text: "Rätt", value: "dishDescription" },
         { text: "Pris (kr)", value: "priceSEK" },
       ];
-            private readonly desserts = [
+        private readonly desserts = [
         {
           value: false,
           category: "Kolga",
