@@ -14,7 +14,8 @@
                 color="indigo"
                 dark>
                 <v-app-bar-nav-icon @click.stop="toggleMenu" />
-                <v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title>
+                <v-toolbar-title>**PROTOTYP** Västra Hamnen {{currentWeekNumber}}</v-toolbar-title>
+                <!--<v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title> -->
             </v-app-bar>
             
             <!-- Sizes your content based upon application components -->
@@ -22,16 +23,16 @@
 
                 <!-- Provides the application the proper gutter -->
                 <v-container fluid>
-
+<!--
                     <div v-if="userHasAllowedLocalStorage">
-
+ -->
                         <router-view></router-view>
-
+<!--
                     </div>
                     <div v-else>
                         <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
                     </div>
-
+ -->
 
                 </v-container>
 
@@ -72,7 +73,7 @@ export default class App extends Vue {
       this.showMenu = !this.showMenu;
     }
 
-    private currentWeekNumber(): number {
+    private get currentWeekNumber(): number {
         const currentWeekNumber = moment().isoWeek();
 
         return currentWeekNumber;
@@ -81,8 +82,7 @@ export default class App extends Vue {
     private async beforeCreate() {
         const ds = new DataService();
         this.allAreas = await ds.allAreas();
-        const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, 4, 2020);
-        const mealsPerAreaDayWeekYear = await ds.mealsPerAreaDayWeekYear(2, 5, 3, 2020);
+        const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, this.currentWeekNumber, 2020);
         const restaurantsPerArea = await ds.restaurantsPerArea(2);
 
         this.$store.commit('setRestaurantsMealsDays', mealsPerAreaWeekYear)
