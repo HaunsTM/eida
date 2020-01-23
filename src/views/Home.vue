@@ -18,7 +18,6 @@ import moment from 'moment';
 })
 export default class Home extends Vue {
 
-    
     get internalMealsPerAreaWeekYear(): Array<RestaurantMealsDay> {
         const internalMealsPerAreaWeekYear = this.$store.state.currentRestaurantsMealsDays;
         return  internalMealsPerAreaWeekYear;

@@ -15,19 +15,18 @@
 
             <v-data-table 
                 :headers="headers" 
-                :items="restaurantMeals(loopIndex)" 
+                :items="restaurantMeals(loopIndex)"
+                hide-default-header
                 hide-default-footer
-                item-key="name" 
-                group-key="restaurantName"
                 disable-pagination
                 disable-sort
                 group-expanded>
 
-                <template slot="items" slot-scope="props">
+                <template v-slot:item="props">
                     <tr>
                         <td>{{ props.item.labelName }}</td>
                         <td>{{ props.item.dishDescription }}</td>
-                        <td>{{ props.item.priceSEK }}</td>
+                        <td>{{ props.item.priceSEK }}:-</span></td>
                     </tr>
                 </template>
 
