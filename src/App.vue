@@ -101,12 +101,11 @@ export default class App extends Vue {
 
     private get userHasAllowedLocalStorage(): boolean {
         debugger;
-        return localStorage.userHasAllowedLocalStorage;
+        return this.$store.getters.getUserHasAllowedLocalStorage;
     }
     private onUserHasAllowedLocalStorage(value: boolean): void {
-        debugger;
-        localStorage.userHasAllowedLocalStorage = value;        
-        this.$forceUpdate();
+        debugger;     
+        this.$store.dispatch('setUserHasAllowedLocalStorage', value);
     }
     /*
     get selectedAreas(): Array<Area> {
