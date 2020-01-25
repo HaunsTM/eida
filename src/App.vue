@@ -5,7 +5,7 @@
             <v-navigation-drawer
                 v-model="showMenu"
                 app>
-                <AreasListDrawer v-bind:allAreas="allAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
+                <AreasListDrawer v-bind:allAreas="availableAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
 
             </v-navigation-drawer>
 
@@ -13,7 +13,7 @@
                 app
                 color="indigo"
                 dark>
-                <v-app-bar-nav-icon @click.stop="toggleMenu" />
+                <v-app-bar-nav-icon v-if="userHasAllowedLocalStorage" @click.stop="toggleMenu" />
                 <v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title>
             </v-app-bar>
             
@@ -55,19 +55,24 @@ import { Component, Vue } from 'vue-property-decorator';
 import DataService from './api/DataService';
 import LocalStorageInfo from './components/LocalStorageInfo.vue';
 import moment from 'moment';
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 
 @Component({
   components: {
     AreasListDrawer,
     LocalStorageInfo,
-  }
+  },
+  computed: {
+        ...mapGetters({
+        availableAreas: 'getAvailableAreas',
+        userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
+    }),
+  },
 })
 export default class App extends Vue {
-    allAreas: Array<Area> = new Array<Area>();
-    selectedAreas: Array<Area> = new Array<Area>();
-    showMenu: boolean = false;
-    
+    private showMenu: boolean = false;
+    private selectedAreas: Area[] = new Array<Area>();
+
     private toggleMenu(): void {
       this.showMenu = !this.showMenu;
     }
@@ -79,46 +84,35 @@ export default class App extends Vue {
     }
 
     private get currentYear(): number {
-        const currentWeekNumber = moment().year();
+        const currentYear = moment().year();
 
-        return currentWeekNumber;
+        return currentYear;
     }
 
     private async beforeCreate() {
         const ds = new DataService();
-        this.allAreas = await ds.allAreas();
         const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, this.currentWeekNumber, 2020);
         const restaurantsPerArea = await ds.restaurantsPerArea(2);
-
-        this.$store.commit('setRestaurantsMealsDays', mealsPerAreaWeekYear)
         const i = 1;
     }
-    private updateSelectedAreas(selectedAreas: Array<Area>) {
-        // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b
-        this.selectedAreas = selectedAreas;
+
+    private get availableAreas(): Area[] {
+        return this.$store.getters.getAvailableAreas;
+    }
+
+    private updateSelectedAreas(selectedAreas: Area[]) {
+        // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b        
+        this.$store.dispatch('setUserSelectedAreas', selectedAreas);
 
     }
 
     private get userHasAllowedLocalStorage(): boolean {
-        debugger;
         return this.$store.getters.getUserHasAllowedLocalStorage;
     }
     private onUserHasAllowedLocalStorage(value: boolean): void {
-        debugger;     
         this.$store.dispatch('setUserHasAllowedLocalStorage', value);
     }
-    /*
-    get selectedAreas(): Array<Area> {
-        const tempSelectedAreas = localStorage.getItem('selectedAreas');
-        const selectedAreas = tempSelectedAreas ? JSON.parse(tempSelectedAreas) : new Array<Area>();
-        debugger;
-        return selectedAreas;
-    }
-    set selectedAreas(value: Array<Area>) {
-        localStorage.setItem('selectedAreas', JSON.stringify(value));
-    }
-    */
-   
+    
 }
 </script>
 

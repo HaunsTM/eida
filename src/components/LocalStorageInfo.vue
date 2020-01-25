@@ -29,13 +29,13 @@
 
 import { Component, Vue } from 'vue-property-decorator';
 
-    @Component
-    export default class LocalStorageInfo extends Vue {    
+@Component
+export default class LocalStorageInfo extends Vue {
 
-      private onUserHasAllowedLocalStorage(): void {        
-        this.$emit("user-has-allowed-local-storage", true);
-      }
+    private onUserHasAllowedLocalStorage(): void {
+        this.$emit('user-has-allowed-local-storage', true);
     }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

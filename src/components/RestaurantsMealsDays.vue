@@ -39,12 +39,12 @@ import { Area } from '../dto/repository/entities/Area';
 
 @Component({
   components: {
-    RestaurantsDishes
-  }
-}) 
+    RestaurantsDishes,
+  },
+})
 export default class RestaurantsMealsDays extends Vue {
- 
-    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: Array<RestaurantMealsDay>;
+
+    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: RestaurantMealsDay[];
     @Prop({default: -1}) currentWeekdayIndex!: number;
 
     private readonly tabsDays = [
@@ -58,11 +58,11 @@ export default class RestaurantsMealsDays extends Vue {
         { index: 6, name: 'Söndag', weekDayIndex: 0 },
       ];
     private activeTab: number = 1;
-    private get internalMealsPerAreaWeekYear(): Array<RestaurantMealsDay> {
+    private get internalMealsPerAreaWeekYear(): RestaurantMealsDay[] {
         const internalMealsPerAreaWeekYear = this.mealsPerAreaWeekYear;
         return  internalMealsPerAreaWeekYear;
     }
-    private restaurantsMealsDay(weekDayIndex: number): Array<RestaurantMealsDay> {
+    private restaurantsMealsDay(weekDayIndex: number): RestaurantMealsDay[] {
         const restaurantsMealsDay = this.internalMealsPerAreaWeekYear
             .map( (r) => {
                 const mealsPerDayAndRestaurant =
@@ -74,7 +74,8 @@ export default class RestaurantsMealsDays extends Vue {
                                 return correctDay;
                             }),
                     );
-                return mealsPerDayAndRestaurant; })
+                return mealsPerDayAndRestaurant;
+            })
             .filter( (r) => {
                 const restaurantHasMealsThisDay = r.alternativeLabelDishPrices.length > 0;
                 return restaurantHasMealsThisDay;
@@ -98,14 +99,14 @@ export default class RestaurantsMealsDays extends Vue {
 
         return initialTabIndex;
     }
+
     private mounted() {
         this.activeTab = this.defaultTabIndex;
     }
-    
-    private testAreasRestaurantsDishes(weekDayIndex: number): AreaRestaurantsDishes[] {
-        return [new AreaRestaurantsDishes( new Area(1, "Malmö"), this.restaurantsMealsDay(weekDayIndex))];
-    }
 
+    private testAreasRestaurantsDishes(weekDayIndex: number): AreaRestaurantsDishes[] {
+        return [new AreaRestaurantsDishes( new Area(1, 'Malmö'), this.restaurantsMealsDay(weekDayIndex))];
+    }
 }
 </script>
 

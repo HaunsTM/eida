@@ -45,15 +45,15 @@ import { Area } from '../dto/repository/entities/Area';
 
 @Component
 export default class AreasListDrawer extends Vue {
-    
-    @Prop({default: new Array<Area>()}) allAreas!: Array<Area>;
-    @Prop({default: new Array<Area>()}) selectedAreas!: Array<Area>;
+
+    @Prop({default: new Array<Area>()}) allAreas!: Area[];
+    @Prop({default: new Array<Area>()}) selectedAreas!: Area[];
 
     get internalSelectedAreas() {
         return this.selectedAreas;
     }
-    set internalSelectedAreas(value: Array<Area>) {
-        this.$emit("update-selected-areas", value);
+    set internalSelectedAreas(value: Area[]) {
+        this.$emit('update-selected-areas', value);
     }
 
 }

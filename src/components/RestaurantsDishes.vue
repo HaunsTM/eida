@@ -26,7 +26,7 @@
                     <tr>
                         <td>{{ props.item.labelName }}</td>
                         <td>{{ props.item.dishDescription }}</td>
-                        <td>{{ props.item.priceSEK }}:-</span></td>
+                        <td><span>{{ props.item.priceSEK }}:-</span></td>
                     </tr>
                 </template>
 
@@ -48,34 +48,38 @@ export default class RestaurantsDishes extends Vue {
     @Prop() restaurantsMealsDay!: RestaurantMealsDay[];
 
       private readonly headers = [
-        { text: "", value: "labelName" },
-        { text: "Rätt", value: "dishDescription" },
-        { text: "Pris (kr)", value: "priceSEK" },
+        { text: '', value: 'labelName' },
+        { text: 'Rätt', value: 'dishDescription' },
+        { text: 'Pris (kr)', value: 'priceSEK' },
       ];
 
       private get sortedRestaurantMeals(): RestaurantMealsDay[] {
         const sortedRestaurantMeals =
             this.restaurantsMealsDay
             .sort((a, b) => {
-                if (a.restaurantName < b.restaurantName)
-                    return -1;
-                if (a.restaurantName > b.restaurantName)
-                    return 1;
+                if (a.restaurantName < b.restaurantName) {
+                        return -1;
+                    }
+                if (a.restaurantName > b.restaurantName) {
+                        return 1;
+                    }
                 return 0;
             })
             .map( (r) => {
 
                 const sortedAlternativeLabelDishPrices = r.alternativeLabelDishPrices.sort((a, b) => {
-                    if (a.labelName < b.labelName)
+                    if (a.labelName < b.labelName) {
                         return -1;
-                    if (a.labelName > b.labelName)
+                    }
+                    if (a.labelName > b.labelName) {
                         return 1;
+                    }
                     return 0;
                 });
 
                 r.alternativeLabelDishPrices = sortedAlternativeLabelDishPrices;
                 return r;
-            })
+            });
         return sortedRestaurantMeals;
       }
 
@@ -92,9 +96,9 @@ export default class RestaurantsDishes extends Vue {
                     value,
                     restaurantName, restaurantMenuUrl,
                     new AlternativeLabelDishPrice(
-                    d.indexNumber, d.labelName, d.dishDescription, +d.priceSEK)
+                    d.indexNumber, d.labelName, d.dishDescription, +d.priceSEK),
                 );
-            return restaurantMeal
+            return restaurantMeal;
         });
         return restaurantMeals;
       }

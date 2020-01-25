@@ -13,12 +13,12 @@ import moment from 'moment';
 
 @Component({
   components: {
-    RestaurantsMealsDays
-  }
+    RestaurantsMealsDays,
+  },
 })
 export default class Home extends Vue {
 
-    get internalMealsPerAreaWeekYear(): Array<RestaurantMealsDay> {
+    get internalMealsPerAreaWeekYear(): RestaurantMealsDay[] {
         const internalMealsPerAreaWeekYear = this.$store.state.currentRestaurantsMealsDays;
         return  internalMealsPerAreaWeekYear;
     }
@@ -29,5 +29,5 @@ export default class Home extends Vue {
         return currentWeekNumber;
     }
 
-};
+}
 </script>
