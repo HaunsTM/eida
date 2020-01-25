@@ -10,7 +10,7 @@
         Medgivande
       </p>
       <div class="text--primary">
-        För att sidan ska fungera måste webbläsaren få tillstånd att lagra dina inställningar. Godkänner du detta?
+        För att sidan ska fungera måste webbläsaren få tillstånd att lagra de inställningar som du gör här på sulten.se. Godkänner du detta?
       </div>
     </v-card-text>
 <v-card-actions>

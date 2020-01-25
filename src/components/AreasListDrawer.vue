@@ -1,7 +1,7 @@
 <template>
     <v-list dense>
         <v-list-item-group
-            v-model="internalSelectedAreas"
+            v-model="userSelectedAreas"
             multiple
         >
             <v-list-item>
@@ -12,11 +12,11 @@
                     <v-list-item-title>Område</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <template v-for="(item, i) in allAreas">
+            <template v-for="(item, index) in availableAreas">
 
                 <v-list-item
                     :key="item.id"
-                    :value="item"
+                    :value="item.name"
                     active-class="deep-purple--text text--accent-4"
                 >
                     <template v-slot:default="{ active, toggle }">
@@ -27,7 +27,7 @@
                         <v-list-item-action>
                             <v-checkbox
                                 :input-value="active"
-                                :true-value="item"
+                                :true-value="item.name"
                                 color="deep-purple accent-4"
                                 @click="toggle"
                             ></v-checkbox>
@@ -42,19 +42,31 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Area } from '../dto/repository/entities/Area';
+import { mapActions, mapGetters } from 'vuex';
 
-@Component
+
+@Component({
+  computed: {
+        ...mapGetters({
+        availableAreas: 'getAvailableAreas',
+        userSelectedAreas: 'getUserSelectedAreas'
+    }),
+  },
+})
 export default class AreasListDrawer extends Vue {
 
-    @Prop({default: new Array<Area>()}) allAreas!: Area[];
-    @Prop({default: new Array<Area>()}) selectedAreas!: Area[];
 
-    get internalSelectedAreas() {
-        return this.selectedAreas;
+    private get availableAreas(): Area[] {
+        return this.$store.getters.getAvailableAreas;
     }
-    set internalSelectedAreas(value: Area[]) {
-        this.$emit('update-selected-areas', value);
+    private get userSelectedAreas(): Area[] {
+        return this.$store.getters.getUserSelectedAreas;
     }
+    private set userSelectedAreas(value: Area[]) {
+        this.$store.dispatch('setUserSelectedAreas', value);
+    }
+
+
 
 }
 </script>

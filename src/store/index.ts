@@ -24,16 +24,23 @@ export default new Vuex.Store({
     },
     mutations: {
         // area
-        SET_USER_SELECTED_AREAS(state, areas: Area[]): void { // addUserSelectedArea
-            state.userSelectedAreas = areas;
+        GET_USER_SELECTED_AREAS(state): void {
+            if (localStorage.getItem('userSelectedAreas')) {
+                const userSelectedAreas = JSON.parse(localStorage.getItem('userSelectedAreas') || '');
+                state.userSelectedAreas = userSelectedAreas;
+            }
         },
+        SET_USER_SELECTED_AREAS(state, userSelectedAreas: Area[]): void {
+            state.userSelectedAreas = userSelectedAreas;
+            localStorage.setItem('userSelectedAreas', JSON.stringify(userSelectedAreas));
+        },
+
         SET_AVALIABLE_AREAS(state, availableAreas: Area[]): void {
             state.availableAreas = availableAreas;
         },
 
         // local storage
         GET_USER_HAS_ALLOWED_LOCAL_STORAGE(state): void {
-            // Check if the ID exists
             if (localStorage.getItem('userHasAllowedLocalStorage')) {
                 // Replace the state object with the stored item
                 state.userHasAllowedLocalStorage = JSON.parse(localStorage.getItem('userHasAllowedLocalStorage') || '');
@@ -51,9 +58,10 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        init(context) {
+        async init(context) {
             context.commit('GET_USER_HAS_ALLOWED_LOCAL_STORAGE');
-            context.dispatch('fetchAvailableAreas');
+            context.commit('GET_USER_SELECTED_AREAS');
+            await context.dispatch('fetchAvailableAreas');
         },
 
         // area
@@ -63,9 +71,9 @@ export default new Vuex.Store({
 
             context.commit('SET_AVALIABLE_AREAS', availableAreas);
         },
-        setUserSelectedAreas(context, areas: Area[]) {
+        setUserSelectedAreas(context, userSelectedAreas: Area[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
-            context.commit('SET_USER_SELECTED_AREAS', areas);
+            context.commit('SET_USER_SELECTED_AREAS', userSelectedAreas);
         },
 
         // local storage
@@ -84,7 +92,10 @@ export default new Vuex.Store({
     getters: {
         // area
         getAvailableAreas(state): Area[] {
-          return state.availableAreas;
+            return state.availableAreas;
+        },
+        getUserSelectedAreas(state): Area[] {
+            return state.userSelectedAreas;
         },
 
         // local storage

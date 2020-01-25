@@ -10,12 +10,12 @@ import '@mdi/font/css/materialdesignicons.css';
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
-  store,
-  vuetify,
-  beforeCreate() {
-    this.$store.dispatch('init');
-    //    this.$mount('#app')
-  },
-  render: (h) => h(App),
+    router,
+    store,
+    vuetify,
+    async  beforeCreate() {
+        this.$store.dispatch('init');
+        //    this.$mount('#app')
+    },
+    render: (h) => h(App),
 }).$mount('#app');

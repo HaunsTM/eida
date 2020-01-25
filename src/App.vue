@@ -5,7 +5,7 @@
             <v-navigation-drawer
                 v-model="showMenu"
                 app>
-                <AreasListDrawer v-bind:allAreas="availableAreas" v-bind:selectedAreas="selectedAreas" @update-selected-areas="updateSelectedAreas" />
+                <AreasListDrawer />
 
             </v-navigation-drawer>
 
@@ -64,14 +64,12 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
   },
   computed: {
         ...mapGetters({
-        availableAreas: 'getAvailableAreas',
         userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
     }),
   },
 })
 export default class App extends Vue {
     private showMenu: boolean = false;
-    private selectedAreas: Area[] = new Array<Area>();
 
     private toggleMenu(): void {
       this.showMenu = !this.showMenu;
@@ -96,15 +94,6 @@ export default class App extends Vue {
         const i = 1;
     }
 
-    private get availableAreas(): Area[] {
-        return this.$store.getters.getAvailableAreas;
-    }
-
-    private updateSelectedAreas(selectedAreas: Area[]) {
-        // https://medium.com/javascript-in-plain-english/avoid-mutating-a-prop-directly-7b127b9bca5b        
-        this.$store.dispatch('setUserSelectedAreas', selectedAreas);
-
-    }
 
     private get userHasAllowedLocalStorage(): boolean {
         return this.$store.getters.getUserHasAllowedLocalStorage;
