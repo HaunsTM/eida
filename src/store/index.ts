@@ -5,6 +5,8 @@ import DataService from '../api/DataService';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import { Area } from '@/dto/repository/entities/Area';
 
+import moment from 'moment';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -21,6 +23,9 @@ export default new Vuex.Store({
 
         // time
         userSelectedWeekNumber: -1,
+        currentWeekdayIndex: -1,
+        currentWeekNumber: -1,
+        currentYear: -1,
     },
     mutations: {
         // area
@@ -56,11 +61,28 @@ export default new Vuex.Store({
         SET_USER_SELECTED_WEEK_NUMBER(state, weekNumberIndex: number) {
             state.userSelectedWeekNumber = weekNumberIndex;
         },
+        SET_CURRENT_WEEKDAY_INDEX(state) {
+            const currentWeekdayIndex = moment().weekday();
+            state.currentWeekdayIndex = currentWeekdayIndex;
+        },
+        SET_CURRENT_WEEK_NUMBER(state) {
+            const currentWeekNumber = moment().isoWeek();
+            state.currentWeekNumber = currentWeekNumber;
+        },
+        SET_CURRENT_YEAR(state) {
+            const currentYear = moment().year();
+            state.currentYear = currentYear;
+        },
     },
     actions: {
         async init(context) {
             context.commit('GET_USER_HAS_ALLOWED_LOCAL_STORAGE');
             context.commit('GET_USER_SELECTED_AREAS');
+
+            context.commit('SET_CURRENT_WEEKDAY_INDEX');
+            context.commit('SET_CURRENT_WEEK_NUMBER');
+            context.commit('SET_CURRENT_YEAR');
+
             await context.dispatch('fetchAvailableAreas');
         },
 
@@ -104,8 +126,20 @@ export default new Vuex.Store({
         },
 
         // time
-        getUserSelectedWeekNumber(state, weekNumber: number): number {
+        getUserSelectedWeekNumber(state): number {
             return state.userSelectedWeekNumber;
+        },
+
+        getCurrentWeekdayIndex(state): number {
+            return state.currentWeekdayIndex;
+        },
+
+        getCurrentWeekNumber(state): number {
+            return state.currentWeekNumber;
+        },
+
+        getCurrentYear(state): number {
+            return state.currentYear;
         },
 
     },

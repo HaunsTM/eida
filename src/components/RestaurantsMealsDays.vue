@@ -33,7 +33,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import RestaurantsDishes from './RestaurantsDishes.vue';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
-import { AreaRestaurantsDishes } from '@/models/AreaRestaurantsMeals';
+import { AreaRestaurantsMeals } from '@/models/AreaRestaurantsMeals';
 import { Area } from '../dto/repository/entities/Area';
 
 
@@ -44,7 +44,7 @@ import { Area } from '../dto/repository/entities/Area';
 })
 export default class RestaurantsMealsDays extends Vue {
 
-    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: RestaurantMealsDay[];
+    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: Promise<RestaurantMealsDay[]> ;
     @Prop({default: -1}) currentWeekdayIndex!: number;
 
     private readonly tabsDays = [
@@ -58,12 +58,13 @@ export default class RestaurantsMealsDays extends Vue {
         { index: 6, name: 'Söndag', weekDayIndex: 0 },
       ];
     private activeTab: number = 1;
-    private get internalMealsPerAreaWeekYear(): RestaurantMealsDay[] {
-        const internalMealsPerAreaWeekYear = this.mealsPerAreaWeekYear;
-        return  internalMealsPerAreaWeekYear;
-    }
-    private restaurantsMealsDay(weekDayIndex: number): RestaurantMealsDay[] {
-        const restaurantsMealsDay = this.internalMealsPerAreaWeekYear
+    
+    private async restaurantsMealsDay(weekDayIndex: number): Promise<RestaurantMealsDay[]>  {
+        const mealsPerAreaWeekYear = await this.mealsPerAreaWeekYear;
+        if (!mealsPerAreaWeekYear.map) {
+            return new Array<RestaurantMealsDay>();
+        }
+        const restaurantsMealsDay = mealsPerAreaWeekYear
             .map( (r) => {
                 const mealsPerDayAndRestaurant =
                     new RestaurantMealsDay(
@@ -104,8 +105,9 @@ export default class RestaurantsMealsDays extends Vue {
         this.activeTab = this.defaultTabIndex;
     }
 
-    private testAreasRestaurantsDishes(weekDayIndex: number): AreaRestaurantsDishes[] {
-        return [new AreaRestaurantsDishes( new Area(1, 'Malmö'), this.restaurantsMealsDay(weekDayIndex))];
+    private async testAreasRestaurantsDishes(weekDayIndex: number): Promise<AreaRestaurantsMeals[]> {
+        const restaurantsMealsDay = await this.restaurantsMealsDay(weekDayIndex);
+        return [new AreaRestaurantsMeals( new Area(1, 'Malmö'), restaurantsMealsDay)];
     }
 }
 </script>

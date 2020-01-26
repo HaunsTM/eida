@@ -58,15 +58,15 @@ import moment from 'moment';
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 
 @Component({
-  components: {
-    AreasListDrawer,
-    LocalStorageInfo,
-  },
-  computed: {
+    components: {
+        AreasListDrawer,
+        LocalStorageInfo,
+    },
+    computed: {
         ...mapGetters({
-        userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
-    }),
-  },
+            userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
+        }),
+    },
 })
 export default class App extends Vue {
     private showMenu: boolean = false;
@@ -86,14 +86,6 @@ export default class App extends Vue {
 
         return currentYear;
     }
-
-    private async beforeCreate() {
-        const ds = new DataService();
-        const mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(2, this.currentWeekNumber, 2020);
-        const restaurantsPerArea = await ds.restaurantsPerArea(2);
-        const i = 1;
-    }
-
 
     private get userHasAllowedLocalStorage(): boolean {
         return this.$store.getters.getUserHasAllowedLocalStorage;

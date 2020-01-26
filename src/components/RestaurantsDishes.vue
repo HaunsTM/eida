@@ -3,8 +3,8 @@
         <v-card
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
             v-bind:key="restaurantMealsDay.restaurantMenuUrl"
-    class="mx-auto"
-    max-width="500">
+            class="mx-auto"
+            max-width="500">
 
             <v-card-title>
                 <a :href="restaurantMealsDay.restaurantMenuUrl" target="_blank" 

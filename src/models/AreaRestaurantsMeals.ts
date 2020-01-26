@@ -1,7 +1,7 @@
 import { Area } from '@/dto/repository/entities/Area';
 import { RestaurantMealsDay } from '@/dto/RestaurantMealsDay';
 
-export class AreaRestaurantsDishes {
+export class AreaRestaurantsMeals {
 
     public area: Area;
     public restaurantMealsDay: RestaurantMealsDay[];

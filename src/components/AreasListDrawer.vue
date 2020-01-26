@@ -1,7 +1,7 @@
 <template>
     <v-list dense>
         <v-list-item-group
-            v-model="userSelectedAreas"
+            v-model="userSelectedAreasNames"
             multiple
         >
             <v-list-item>
@@ -59,11 +59,22 @@ export default class AreasListDrawer extends Vue {
     private get availableAreas(): Area[] {
         return this.$store.getters.getAvailableAreas;
     }
-    private get userSelectedAreas(): Area[] {
-        return this.$store.getters.getUserSelectedAreas;
+    private get userSelectedAreasNames(): string[] {
+        const userSelectedAreas = this.$store.getters.getUserSelectedAreas as Area[];
+        const userSelectedAreasNames =
+            userSelectedAreas
+           .map( (a) => {return a as Area})
+           .map( (a) => { return a.name});
+        return userSelectedAreasNames;
     }
-    private set userSelectedAreas(value: Area[]) {
-        this.$store.dispatch('setUserSelectedAreas', value);
+    private set userSelectedAreasNames(areaNames: string[]) {
+        const userSelectedAreas =
+            this.availableAreas
+            .filter( (a) => {
+                const isIncluded = areaNames.includes(a.name);
+                return isIncluded;
+            });
+        this.$store.dispatch('setUserSelectedAreas', userSelectedAreas);
     }
 
 
