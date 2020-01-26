@@ -10,18 +10,19 @@
             :key="tabDay.index">
             {{tabDay.name}}
         </v-tab>
-
         <v-tab-item 
             v-for="tabDay of tabsDays"
             :key="tabDay.index">
 
             <v-card flat color="basil" 
-                v-for = "areaRestaurantsDishes in testAreasRestaurantsDishes(tabDay.weekDayIndex)"
-                :key = "areaRestaurantsDishes.area.id">
+                v-for = "areaRestaurantsDishes in areasMealsRestaurants"
+                :key = "areaRestaurantsDishes.area.id"
+                class="area-card">
                 
                 <v-card-title class="headline">{{areaRestaurantsDishes.area.name}}</v-card-title>
 
-                <RestaurantsDishes :restaurantsMealsDay="restaurantsMealsDay(tabDay.weekDayIndex)"/>
+                <RestaurantsDishes
+                    :restaurantsMealsDay="restaurantsMealsDay(tabDay.weekDayIndex, areaRestaurantsDishes.area)"/>
             </v-card>
 
         </v-tab-item>
@@ -44,8 +45,8 @@ import { Area } from '../dto/repository/entities/Area';
 })
 export default class RestaurantsMealsDays extends Vue {
 
-    @Prop({default: new Array<RestaurantMealsDay>()}) mealsPerAreaWeekYear!: Promise<RestaurantMealsDay[]> ;
-    @Prop({default: -1}) currentWeekdayIndex!: number;
+    @Prop() areasMealsRestaurants!:  AreaRestaurantsMeals[];
+    @Prop() currentWeekdayIndex!: number;
 
     private readonly tabsDays = [
         { index: 0, name: 'Måndag', weekDayIndex: 1 },
@@ -59,12 +60,13 @@ export default class RestaurantsMealsDays extends Vue {
       ];
     private activeTab: number = 1;
     
-    private async restaurantsMealsDay(weekDayIndex: number): Promise<RestaurantMealsDay[]>  {
-        const mealsPerAreaWeekYear = await this.mealsPerAreaWeekYear;
-        if (!mealsPerAreaWeekYear.map) {
-            return new Array<RestaurantMealsDay>();
-        }
-        const restaurantsMealsDay = mealsPerAreaWeekYear
+    private restaurantsMealsDay(weekDayIndex: number, area: Area): RestaurantMealsDay[]  {
+        let areaMealsRestaurants = this.areasMealsRestaurants.find( (aMR) => {
+            const found = area.id === aMR.area.id;
+            return found;
+        });
+        areaMealsRestaurants = areaMealsRestaurants ? areaMealsRestaurants : new AreaRestaurantsMeals(new Area(0,""), new Array<RestaurantMealsDay>());
+        const restaurantsMealsDay = areaMealsRestaurants.restaurantMealsDay
             .map( (r) => {
                 const mealsPerDayAndRestaurant =
                     new RestaurantMealsDay(
@@ -105,14 +107,12 @@ export default class RestaurantsMealsDays extends Vue {
         this.activeTab = this.defaultTabIndex;
     }
 
-    private async testAreasRestaurantsDishes(weekDayIndex: number): Promise<AreaRestaurantsMeals[]> {
-        const restaurantsMealsDay = await this.restaurantsMealsDay(weekDayIndex);
-        return [new AreaRestaurantsMeals( new Area(1, 'Malmö'), restaurantsMealsDay)];
-    }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .area-card {
+        margin-bottom: 1rem;
+    }
 </style>

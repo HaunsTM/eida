@@ -3,7 +3,7 @@
         <v-card
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
             v-bind:key="restaurantMealsDay.restaurantMenuUrl"
-            class="mx-auto"
+            class="mx-auto restaurant-card"
             max-width="500">
 
             <v-card-title>
@@ -109,5 +109,8 @@ export default class RestaurantsDishes extends Vue {
 <style scoped>
     .hide-link-style {
         text-decoration: none;
+    }
+    .restaurant-card {
+        margin-bottom: 0.4rem;
     }
 </style>

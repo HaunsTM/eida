@@ -1,11 +1,10 @@
 <template>
   <div class="home">
-    <!--
+
     <RestaurantsMealsDays 
-        v-bind:mealsPerAreaWeekYear="internalMealsPerAreaWeekYear"
-         v-bind:currentWeekdayIndex="currentWeekNumber"/>
-    -->
-    {{test}}
+        v-bind:areasMealsRestaurants="internalAreasMealsRestaurants"
+        v-bind:currentWeekdayIndex="currentWeekNumber"/>
+
   </div>
 </template>
 
@@ -18,6 +17,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import DataService from '../api/DataService';
+import { AreaRestaurantsMeals } from '../models/AreaRestaurantsMeals';
 
 @Component({
     components: {
@@ -41,17 +41,27 @@ export default class Home extends Vue {
     private currentWeekNumber!: number;
     private currentYear!: number;
 
+    private internalAreasMealsRestaurants = new Array<AreaRestaurantsMeals>();
+    
+    @Watch('userSelectedAreas')
+    private async fetchAreasMealsRestaurants(): Promise<void> {
+        //const ds = new DataService();
+        const currentWeekNumber = this.currentWeekNumber;
+        const currentYear = this.currentYear;
+        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (a) => {
+            const ds = new DataService();
+            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(a.id, currentWeekNumber, currentYear);
+            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(a, mealsPerAreaWeekYear);
+            return currentAreaRestaurantsMeals;
+        });
 
-private test: RestaurantMealsDay[] = new Array<RestaurantMealsDay>();
-@Watch('userSelectedAreas')
-    private async internalMealsPerAreaWeekYear(): Promise<void> {
-        
-        const ds = new DataService();
-
-        this.test = await ds.mealsPerAreaWeekYear(this.userSelectedAreas[0].id, this.currentWeekNumber, 2020);
-
+        const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
+        this.internalAreasMealsRestaurants = areasMealsRestaurants;
     }
 
+    private async created() {
+        await this.fetchAreasMealsRestaurants();
+    }
 
 }
 </script>
