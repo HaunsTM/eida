@@ -24,9 +24,12 @@
                 <v-container fluid>
 
                     <div v-if="userHasAllowedLocalStorage">
-
-                        <router-view></router-view>
-
+                        <div v-if="userSelectedAreas.length > 0">
+                            <router-view></router-view>
+                        </div>
+                        <div v-else>
+                            <HowToInfo />
+                        </div>
                     </div>
                     <div v-else>
                         <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
@@ -51,6 +54,7 @@
 <script lang="ts">
 import { Area } from './dto/repository/entities/Area';
 import AreasListDrawer from './components/AreasListDrawer.vue';
+import HowToInfo from './components/HowToInfo.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import DataService from './api/DataService';
 import LocalStorageInfo from './components/LocalStorageInfo.vue';
@@ -60,39 +64,38 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 @Component({
     components: {
         AreasListDrawer,
+        HowToInfo,
         LocalStorageInfo,
     },
     computed: {
         ...mapGetters({
             userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
+            userSelectedAreas: 'getUserSelectedAreas',
+
+            currentWeekNumber: 'getCurrentWeekNumber',
+            currentYear: 'getCurrentYear'
         }),
     },
 })
 export default class App extends Vue {
     private showMenu: boolean = false;
 
+    private currentWeekNumber!: number;
+    private currentYear!: number;
+
     private toggleMenu(): void {
       this.showMenu = !this.showMenu;
     }
-
-    private get currentWeekNumber(): number {
-        const currentWeekNumber = moment().isoWeek();
-
-        return currentWeekNumber;
+    private get userSelectedAreas(): Area[] {
+        return this.$store.getters.getUserSelectedAreas;
     }
-
-    private get currentYear(): number {
-        const currentYear = moment().year();
-
-        return currentYear;
-    }
-
     private get userHasAllowedLocalStorage(): boolean {
         return this.$store.getters.getUserHasAllowedLocalStorage;
     }
     private onUserHasAllowedLocalStorage(value: boolean): void {
         this.$store.dispatch('setUserHasAllowedLocalStorage', value);
     }
+
     
 }
 </script>

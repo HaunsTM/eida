@@ -30,7 +30,7 @@ import DataService from '../api/DataService';
             currentWeekdayIndex: 'getCurrentWeekdayIndex',
             currentWeekNumber: 'getCurrentWeekNumber',
             currentYear: 'getCurrentYear'
-        }),
+        }), 
     },
 })
 export default class Home extends Vue {
