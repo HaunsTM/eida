@@ -105,6 +105,7 @@ export default class RestaurantsMealsDays extends Vue {
 
     private mounted() {
         this.activeTab = this.defaultTabIndex;
+        debugger;
     }
 
 }

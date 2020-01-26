@@ -3,7 +3,7 @@
 
     <RestaurantsMealsDays 
         v-bind:areasMealsRestaurants="internalAreasMealsRestaurants"
-        v-bind:currentWeekdayIndex="currentWeekNumber"/>
+        v-bind:currentWeekdayIndex="currentWeekdayIndex"/>
 
   </div>
 </template>
