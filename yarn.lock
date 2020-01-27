@@ -7480,6 +7480,11 @@ vue-cli-plugin-vuetify@^2.0.3:
   dependencies:
     shelljs "^0.8.3"
 
+vue-gtag@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-1.2.0.tgz#88fe9be29dd5959f4df5d47c01c4603829e8d1cf"
+  integrity sha512-VlL1xCpQGzGsMrF4AVYZQUvb8sILNYKnK/bBXpvoXe62u7Mq60RjNR9BHplHvZlwmunTEmi+518+WzopQLqNYg==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
