@@ -2,14 +2,14 @@
     <section>
         <v-card
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-            v-bind:key="restaurantMealsDay.restaurantMenuUrl"
+            v-bind:key="loopIndex"
             class="mx-auto restaurant-card"
             max-width="500">
 
             <v-card-title>
-                <a :href="restaurantMealsDay.restaurantMenuUrl" target="_blank" 
+                <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
                     class="hide-link-style grey--text text--darken-1">
-                    {{ restaurantMealsDay.restaurantName }}
+                    {{ restaurantMeals(loopIndex)[0].restaurantName }}
                 </a>
             </v-card-title>
 
@@ -84,7 +84,7 @@ export default class RestaurantsDishes extends Vue {
       }
 
       private restaurantMeals(restaurantListIndex: number): RestaurantMeal[] {
-
+debugger;
         const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
         const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
         const restaurantMeals =
