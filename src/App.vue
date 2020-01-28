@@ -43,7 +43,7 @@
             <v-footer
                 color="indigo"
                 app>
-                <span class="white--text"><i>"-Eid mäé sulten pongkt ess ei!"</i> - vecka {{currentWeekNumber}} - {{currentYear}}</span>
+                <span class="white--text"><i>"-Eid mé sulten pongkt ess ei!"</i> - vecka {{currentWeekNumber}} - {{currentYear}}</span>
             </v-footer>
 
         </v-app>
