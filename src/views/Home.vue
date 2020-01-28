@@ -13,6 +13,7 @@
 import { Area } from '@/dto/repository/entities/Area';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue';
+import NoMealsForSelectedAreasYet from '@/components/NoMealsForSelectedAreasYet.vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
@@ -57,6 +58,29 @@ export default class Home extends Vue {
 
         const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
         this.internalAreasMealsRestaurants = areasMealsRestaurants;
+        const totalNumberOfMealsPerDay = this.totalNumberOfMealsPerDay(2);
+    }
+
+    private totalNumberOfMealsPerDay(dayIndex: number): number {
+
+        const totalNumberOfMealsPerDay =
+            this.internalAreasMealsRestaurants.map( (area) => {
+                const allRestaurantsInArea = area.restaurantMealsDay;
+                const arrayOfAllMealsPerRestaurantAndDay =
+                    allRestaurantsInArea.map( (restaurant) => {
+                        const allDishesForWantedDay =
+                        restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
+                            const correctDayFound = aLDP.dayIndex === dayIndex;
+                            return correctDayFound;
+                        });
+                        return allDishesForWantedDay;
+                    })
+                return arrayOfAllMealsPerRestaurantAndDay.flatMap(x=>x);
+            })
+        .flatMap(x=>x)
+        .length;
+    debugger;
+        return 0;
     }
 
     private async created() {

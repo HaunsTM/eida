@@ -2,7 +2,7 @@
     <section>
         <v-card
             v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-            v-bind:key="restaurantMealsDay.restaurantMenuUrl"
+            v-bind:key="loopIndex"
             class="mx-auto restaurant-card"
             max-width="500">
 
