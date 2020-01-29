@@ -21,23 +21,23 @@
             <v-content>
 
                 <!-- Provides the application the proper gutter -->
-                <v-container fluid>
-
-                    <div v-if="userHasAllowedLocalStorage">
-                        <div v-if="userSelectedAreas.length > 0">
-                            <router-view></router-view>
-                        </div>
-                        <div v-else>
-                            <HowToInfo />
-                        </div>
-                    </div>
-                    <div v-else>
-                        <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
-                    </div>
-
-
+                <v-container>
+                    <v-row align="start" justify="center">
+                        <v-col>
+                            <div v-if="userHasAllowedLocalStorage">
+                                <div v-if="userSelectedAreas.length > 0">
+                                    <router-view></router-view>
+                                </div>
+                                <div v-else>
+                                    <HowToInfo />
+                                </div>
+                            </div>
+                            <div v-else>
+                                <LocalStorageInfo v-on:user-has-allowed-local-storage="onUserHasAllowedLocalStorage"/>
+                            </div>
+                        </v-col>
+                    </v-row>
                 </v-container>
-
             </v-content>
 
             <v-footer

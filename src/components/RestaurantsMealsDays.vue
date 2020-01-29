@@ -18,11 +18,22 @@
                 v-for = "areaRestaurantsDishes in areasMealsRestaurants"
                 :key = "areaRestaurantsDishes.area.id"
                 class="area-card">
-                
-                <v-card-title class="headline">{{areaRestaurantsDishes.area.name}}</v-card-title>
 
-                <RestaurantsDishes
-                    :restaurantsMealsDay="restaurantsMealsDay(tabDay.weekDayIndex, areaRestaurantsDishes.area)"/>
+                <v-container fluid>
+
+                    <v-row>
+                        <v-col cols=12>
+                            <v-card-title class="headline">{{areaRestaurantsDishes.area.name}}</v-card-title>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <RestaurantsDishes
+                                :restaurantsMealsDay="restaurantsMealsDay(tabDay.weekDayIndex, areaRestaurantsDishes.area)"/>
+                        </v-col>
+                    </v-row>
+                </v-container>
+
             </v-card>
 
         </v-tab-item>

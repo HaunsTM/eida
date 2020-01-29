@@ -1,38 +1,47 @@
 <template>
     <section>
-        <v-card
-            v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-            v-bind:key="loopIndex"
-            class="mx-auto restaurant-card"
-            max-width="500">
+        <v-container fluid>
 
-            <v-card-title>
-                <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
-                    class="hide-link-style grey--text text--darken-1">
-                    {{ restaurantMeals(loopIndex)[0].restaurantName }}
-                </a>
-            </v-card-title>
 
-            <v-data-table 
-                :headers="headers" 
-                :items="restaurantMeals(loopIndex)"
-                hide-default-header
-                hide-default-footer
-                disable-pagination
-                disable-sort
-                group-expanded>
 
-                <template v-slot:item="props">
-                    <tr>
-                        <td>{{ props.item.labelName }}</td>
-                        <td>{{ props.item.dishDescription }}</td>
-                        <td><span>{{ props.item.priceSEK }}:-</span></td>
-                    </tr>
-                </template>
+            <v-row>
+                <v-col cols="12" md="6" align-items=stretch
+                        v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
+                        v-bind:key="loopIndex">
+                    
+                    <v-card class="restaurant-card">
 
-            </v-data-table>
+                        <v-card-title>
+                            <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
+                                class="hide-link-style grey--text text--darken-1">
+                                {{ restaurantMeals(loopIndex)[0].restaurantName }}
+                            </a>
+                        </v-card-title>
 
-        </v-card>
+                        <v-data-table 
+                            :headers="headers" 
+                            :items="restaurantMeals(loopIndex)"
+                            hide-default-header
+                            hide-default-footer
+                            disable-pagination
+                            disable-sort
+                            group-expanded>
+
+                            <template v-slot:item="props">
+                                <tr>
+                                    <td>{{ props.item.labelName }}</td>
+                                    <td>{{ props.item.dishDescription }}</td>
+                                    <td><span>{{ props.item.priceSEK }}:-</span></td>
+                                </tr>
+                            </template>
+
+                        </v-data-table>
+
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+        
     </section>
 
 </template>

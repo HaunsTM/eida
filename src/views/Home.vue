@@ -1,11 +1,14 @@
 <template>
-  <div class="home">
-
-    <RestaurantsMealsDays 
-        v-bind:areasMealsRestaurants="internalAreasMealsRestaurants"
-        v-bind:currentWeekdayIndex="currentWeekdayIndex"/>
-    <div v-if="mealsPerAreaRestaurantsAndDay(currentWeekdayIndex)"
-  </div>
+    <div class="home">
+        <div v-if="atLeastOneRestaurantHasOneMealInCurrentWeek()">
+            <RestaurantsMealsDays 
+                v-bind:areasMealsRestaurants="internalAreasMealsRestaurants"
+                v-bind:currentWeekdayIndex="currentWeekdayIndex"/>
+        </div>
+        <div v-else>
+            <NoMealsForSelectedAreasYet />
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -23,6 +26,7 @@ import { AlternativeLabelDishPriceDay } from '../dto/AlternativeLabelDishPriceDa
 
 @Component({
     components: {
+        NoMealsForSelectedAreasYet,
         RestaurantsMealsDays,
     },
     computed: {
@@ -59,18 +63,28 @@ export default class Home extends Vue {
 
         const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
         this.internalAreasMealsRestaurants = areasMealsRestaurants;
-        const mealsPerAreaRestaurantsAndDay = this.mealsPerAreaRestaurantsAndDay(9, areasMealsRestaurants);
-        const length = mealsPerAreaRestaurantsAndDay.length;
-        debugger;
     }
 
+    private get allDayIndexesInAWeek(): number[] {
+        const allDayIndexesInAWeek = [0,1,2,3,4,5,6]
+        return allDayIndexesInAWeek;
+    }
+    private atLeastOneRestaurantHasOneMealInCurrentWeek(): boolean {
+        let atLeastOneRestaurantHasOneMealInCurrentWeek = false;
+        if (this.internalAreasMealsRestaurants) {
+            const mealsPerAreaRestaurantsAndDays = 
+                this.mealsPerAreaRestaurantsAndDays( this.allDayIndexesInAWeek, this.internalAreasMealsRestaurants );
+            atLeastOneRestaurantHasOneMealInCurrentWeek = mealsPerAreaRestaurantsAndDays.length > 0;
+        }
+        return atLeastOneRestaurantHasOneMealInCurrentWeek;
+    }
 
     private mealsPerRestaurantAndDay(dayIndexes: number[], allRestaurantsMealsInArea: RestaurantMealsDay[]): AlternativeLabelDishPriceDay[] {
         const arrayOfAllMealsPerRestaurantAndDay =
             allRestaurantsMealsInArea.map( (restaurant) => {
                 const allDishesForWantedDay =
                 restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
-                    const correctDayFound = aLDP.dayIndex === dayIndex;
+                    const correctDayFound = dayIndexes.includes(aLDP.dayIndex);
                     return correctDayFound;
                 });
                 return allDishesForWantedDay;
@@ -79,12 +93,13 @@ export default class Home extends Vue {
             .flatMap(x=>x);
         return mealsPerRestaurantAndDay;
     }
-    private mealsPerAreaRestaurantsAndDay(dayIndexes: number[], areasMealsRestaurants: AreaRestaurantsMeals[]): AlternativeLabelDishPriceDay[] {
+
+    private mealsPerAreaRestaurantsAndDays(dayIndexes: number[], areasMealsRestaurants: AreaRestaurantsMeals[]): AlternativeLabelDishPriceDay[] {
 
         const mealsPerAreaRestaurantsAndDay =
             areasMealsRestaurants.map( (area) => {
                 const allRestaurantsInArea = area.restaurantMealsDay;
-                return this.mealsPerRestaurantAndDay(dayIndex, allRestaurantsInArea)
+                return this.mealsPerRestaurantAndDay(dayIndexes, allRestaurantsInArea)
             })
         .flatMap(x=>x)
         .filter(x=> this.isEligible(x));
@@ -93,6 +108,7 @@ export default class Home extends Vue {
     }
 
     isEligible(value: any) {
+        // used to identify null/undefined/empty/false-values in an array
         if(value !== false || value !== null || value !== 0 || value !== "" || value !== undefined) {
             return value;
         }
