@@ -4,7 +4,7 @@
     <RestaurantsMealsDays 
         v-bind:areasMealsRestaurants="internalAreasMealsRestaurants"
         v-bind:currentWeekdayIndex="currentWeekdayIndex"/>
-
+    <div v-if="mealsPerAreaRestaurantsAndDay(currentWeekdayIndex)"
   </div>
 </template>
 
@@ -19,6 +19,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import DataService from '../api/DataService';
 import { AreaRestaurantsMeals } from '../models/AreaRestaurantsMeals';
+import { AlternativeLabelDishPriceDay } from '../dto/AlternativeLabelDishPriceDay';
 
 @Component({
     components: {
@@ -58,31 +59,48 @@ export default class Home extends Vue {
 
         const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
         this.internalAreasMealsRestaurants = areasMealsRestaurants;
-        const totalNumberOfMealsPerDay = this.totalNumberOfMealsPerDay(2);
+        const mealsPerAreaRestaurantsAndDay = this.mealsPerAreaRestaurantsAndDay(9, areasMealsRestaurants);
+        const length = mealsPerAreaRestaurantsAndDay.length;
+        debugger;
     }
 
-    private totalNumberOfMealsPerDay(dayIndex: number): number {
 
-        const totalNumberOfMealsPerDay =
-            this.internalAreasMealsRestaurants.map( (area) => {
+    private mealsPerRestaurantAndDay(dayIndexes: number[], allRestaurantsMealsInArea: RestaurantMealsDay[]): AlternativeLabelDishPriceDay[] {
+        const arrayOfAllMealsPerRestaurantAndDay =
+            allRestaurantsMealsInArea.map( (restaurant) => {
+                const allDishesForWantedDay =
+                restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
+                    const correctDayFound = aLDP.dayIndex === dayIndex;
+                    return correctDayFound;
+                });
+                return allDishesForWantedDay;
+            });
+        const mealsPerRestaurantAndDay = arrayOfAllMealsPerRestaurantAndDay
+            .flatMap(x=>x);
+        return mealsPerRestaurantAndDay;
+    }
+    private mealsPerAreaRestaurantsAndDay(dayIndexes: number[], areasMealsRestaurants: AreaRestaurantsMeals[]): AlternativeLabelDishPriceDay[] {
+
+        const mealsPerAreaRestaurantsAndDay =
+            areasMealsRestaurants.map( (area) => {
                 const allRestaurantsInArea = area.restaurantMealsDay;
-                const arrayOfAllMealsPerRestaurantAndDay =
-                    allRestaurantsInArea.map( (restaurant) => {
-                        const allDishesForWantedDay =
-                        restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
-                            const correctDayFound = aLDP.dayIndex === dayIndex;
-                            return correctDayFound;
-                        });
-                        return allDishesForWantedDay;
-                    })
-                return arrayOfAllMealsPerRestaurantAndDay.flatMap(x=>x);
+                return this.mealsPerRestaurantAndDay(dayIndex, allRestaurantsInArea)
             })
         .flatMap(x=>x)
-        .length;
-    debugger;
-        return 0;
+        .filter(x=> this.isEligible(x));
+
+        return mealsPerAreaRestaurantsAndDay;
     }
 
+    isEligible(value: any) {
+        if(value !== false || value !== null || value !== 0 || value !== "" || value !== undefined) {
+            return value;
+        }
+        else {
+            return false;
+        }
+    }
+    
     private async created() {
         await this.fetchAreasMealsRestaurants();
     }

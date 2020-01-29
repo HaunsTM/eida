@@ -84,7 +84,6 @@ export default class RestaurantsDishes extends Vue {
       }
 
       private restaurantMeals(restaurantListIndex: number): RestaurantMeal[] {
-debugger;
         const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
         const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
         const restaurantMeals =
