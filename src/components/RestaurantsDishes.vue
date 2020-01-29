@@ -5,7 +5,7 @@
 
 
             <v-row>
-                <v-col cols="12" md="6" align-items=stretch
+                <v-col cols="12" md="6" align-items="stretch"
                         v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
                         v-bind:key="loopIndex">
                     
@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>{{ props.item.labelName }}</td>
                                     <td>{{ props.item.dishDescription }}</td>
-                                    <td><span>{{ props.item.priceSEK }}:-</span></td>
+                                    <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK : "*PRIS SAKNAS*" }}:-</span></td>
                                 </tr>
                             </template>
 
