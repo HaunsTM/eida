@@ -1,8 +1,40 @@
 <template>
 
     <section>
-        <div class="d-md-none">
+        <div class="d-md-none single-column">
             <!--hide on screens wider than md-->
+            <v-card
+                v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
+                v-bind:key="loopIndex"
+                class="restaurant-card">
+
+                <v-card-title>
+                    <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
+                        class="hide-link-style grey--text text--darken-1">
+                        {{ restaurantMeals(loopIndex)[0].restaurantName }}
+                    </a>
+                </v-card-title>
+
+                <v-data-table
+                    :headers="headers" 
+                    :items="restaurantMeals(loopIndex)"
+                    hide-default-header
+                    hide-default-footer
+                    hide-actions
+                    disable-pagination
+                    disable-sort
+                    group-by="labelName"
+                    class="restaurant-card-table">
+
+                    <template v-slot:item="props">
+                        <tr>
+                            <td>{{ props.item.dishDescription }}</td>
+                            <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK + ":-" : "*PRIS SAKNAS*" }}sdf</span></td>
+                        </tr>
+                    </template>
+
+                </v-data-table>
+            </v-card>
 
         </div>
         <div class="d-none d-md-block multi-column-2">            
@@ -20,18 +52,18 @@
                     </a>
                 </v-card-title>
 
-                <v-data-table 
+                <v-data-table
                     :headers="headers" 
                     :items="restaurantMeals(loopIndex)"
                     hide-default-header
                     hide-default-footer
                     disable-pagination
                     disable-sort
-                    group-expanded>
+                    group-by="labelName"
+                    class="restaurant-card-table">
 
                     <template v-slot:item="props">
                         <tr>
-                            <td>{{ props.item.labelName }}</td>
                             <td>{{ props.item.dishDescription }}</td>
                             <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK + ":-" : "*PRIS SAKNAS*" }}</span></td>
                         </tr>
@@ -39,8 +71,6 @@
 
                 </v-data-table>
             </v-card>
-
-
 
         </div>
     </section>
@@ -59,8 +89,8 @@ export default class RestaurantsDishes extends Vue {
 
       private readonly headers = [
         { text: '', value: 'labelName' },
-        { text: 'Rätt', value: 'dishDescription' },
-        { text: 'Pris (kr)', value: 'priceSEK' },
+        { text: '', value: 'dishDescription' },
+        { text: '', value: 'priceSEK' },
       ];
 
       private get sortedRestaurantMeals(): RestaurantMealsDay[] {
@@ -124,8 +154,15 @@ export default class RestaurantsDishes extends Vue {
         display: inline-block;
         width: 100%
     }
+    .single-column > .restaurant-card {
+        margin-bottom: 0.4rem;
+        max-width: 500px
+    }
     .multi-column-2{
         column-count: 2;
         column-gap: 1rem;
+    }
+    .restaurant-card-table >>> button {
+        display: none;
     }
 </style>
