@@ -1,47 +1,48 @@
 <template>
+
     <section>
-        <v-container fluid>
+        <div class="d-md-none">
+            <!--hide on screens wider than md-->
+
+        </div>
+        <div class="d-none d-md-block multi-column-2">            
+            <!--hide on screens smaller than md-->
+
+            <v-card
+                v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
+                v-bind:key="loopIndex"
+                class="restaurant-card">
+
+                <v-card-title>
+                    <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
+                        class="hide-link-style grey--text text--darken-1">
+                        {{ restaurantMeals(loopIndex)[0].restaurantName }}
+                    </a>
+                </v-card-title>
+
+                <v-data-table 
+                    :headers="headers" 
+                    :items="restaurantMeals(loopIndex)"
+                    hide-default-header
+                    hide-default-footer
+                    disable-pagination
+                    disable-sort
+                    group-expanded>
+
+                    <template v-slot:item="props">
+                        <tr>
+                            <td>{{ props.item.labelName }}</td>
+                            <td>{{ props.item.dishDescription }}</td>
+                            <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK + ":-" : "*PRIS SAKNAS*" }}</span></td>
+                        </tr>
+                    </template>
+
+                </v-data-table>
+            </v-card>
 
 
 
-            <v-row>
-                <v-col cols="12" md="6" align-items="stretch"
-                        v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-                        v-bind:key="loopIndex">
-                    
-                    <v-card class="restaurant-card">
-
-                        <v-card-title>
-                            <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
-                                class="hide-link-style grey--text text--darken-1">
-                                {{ restaurantMeals(loopIndex)[0].restaurantName }}
-                            </a>
-                        </v-card-title>
-
-                        <v-data-table 
-                            :headers="headers" 
-                            :items="restaurantMeals(loopIndex)"
-                            hide-default-header
-                            hide-default-footer
-                            disable-pagination
-                            disable-sort
-                            group-expanded>
-
-                            <template v-slot:item="props">
-                                <tr>
-                                    <td>{{ props.item.labelName }}</td>
-                                    <td>{{ props.item.dishDescription }}</td>
-                                    <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK : "*PRIS SAKNAS*" }}:-</span></td>
-                                </tr>
-                            </template>
-
-                        </v-data-table>
-
-                    </v-card>
-                </v-col>
-            </v-row>
-        </v-container>
-        
+        </div>
     </section>
 
 </template>
@@ -118,7 +119,13 @@ export default class RestaurantsDishes extends Vue {
     .hide-link-style {
         text-decoration: none;
     }
-    .restaurant-card {
+    .multi-column-2 > .restaurant-card {
         margin-bottom: 0.4rem;
+        display: inline-block;
+        width: 100%
+    }
+    .multi-column-2{
+        column-count: 2;
+        column-gap: 1rem;
     }
 </style>

@@ -22,7 +22,7 @@
                 <v-container fluid>
 
                     <v-row>
-                        <v-col cols=12>
+                        <v-col cols="12">
                             <v-card-title class="headline">{{areaRestaurantsDishes.area.name}}</v-card-title>
                         </v-col>
                     </v-row>
@@ -125,5 +125,6 @@ export default class RestaurantsMealsDays extends Vue {
 <style scoped>
     .area-card {
         margin-bottom: 1rem;
+        padding: 0;
     }
 </style>

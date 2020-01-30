@@ -109,14 +109,14 @@ export default class Home extends Vue {
 
     isEligible(value: any) {
         // used to identify null/undefined/empty/false-values in an array
-        if(value !== false || value !== null || value !== 0 || value !== "" || value !== undefined) {
+        if(value !== false || value !== null || value !== 0 || value !== '' || value !== undefined) {
             return value;
         }
         else {
             return false;
         }
     }
-    
+
     private async created() {
         await this.fetchAreasMealsRestaurants();
     }

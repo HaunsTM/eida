@@ -21,9 +21,9 @@
             <v-content>
 
                 <!-- Provides the application the proper gutter -->
-                <v-container>
+                <v-container >
                     <v-row align="start" justify="center">
-                        <v-col>
+                        <v-col cols="12">
                             <div v-if="userHasAllowedLocalStorage">
                                 <div v-if="userSelectedAreas.length > 0">
                                     <router-view></router-view>
