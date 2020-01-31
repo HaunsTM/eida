@@ -80,8 +80,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
-import { RestaurantMeal } from '../models/RestaurantMeal';
+import { RestaurantMealsGroupedByLabel } from '../models/RestaurantMealsGroupedByLabel';
 import { AlternativeLabelDishPrice } from '../dto/AlternativeLabelDishPrice';
+import { AlternativesDishesPricesGroupedByLabel } from '../models/AlternativesDishesPricesGroupedByLabel';
 
 @Component
 export default class RestaurantsDishes extends Vue {
@@ -123,7 +124,7 @@ export default class RestaurantsDishes extends Vue {
         return sortedRestaurantMeals;
       }
 
-      private restaurantMeals(restaurantListIndex: number): RestaurantMeal[] {
+      private restaurantMeals(restaurantListIndex: number): RestaurantMealsGroupedByLabel[] {
         const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
         const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
         const restaurantMeals =
@@ -131,11 +132,15 @@ export default class RestaurantsDishes extends Vue {
             // RestaurantMeal
             const value = false;
             const restaurantMeal =
-                new RestaurantMeal(
+                new RestaurantMealsGroupedByLabel(
                     value,
-                    restaurantName, restaurantMenuUrl,
+                    restaurantName,
+                    restaurantMenuUrl,
+                    new AlternativesDishesPricesGroupedByLabel()
+                    
                     new AlternativeLabelDishPrice(
                     d.indexNumber, d.labelName, d.dishDescription, +d.priceSEK),
+                    
                 );
             return restaurantMeal;
         });
