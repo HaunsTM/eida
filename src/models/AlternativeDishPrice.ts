@@ -9,10 +9,10 @@ export class AlternativeDishPrice {
     constructor(
         indexNumber: IndexNumber,
         dishDescription: string,
-        pricesSEK: number) {
+        priceSEK: number) {
 
             this.indexNumber = indexNumber;
             this.dishDescription = dishDescription;
-            this.priceSEK = pricesSEK;
+            this.priceSEK = priceSEK;
     }
 }

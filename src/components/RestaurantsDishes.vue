@@ -4,51 +4,49 @@
         <div class="d-md-none single-column">
             <!--hide on screens wider than md-->
             <v-card
-                v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-                v-bind:key="loopIndex"
+                v-for="(restaurantMealsDay, restaurantIndex) in restaurantsMealsDay"
+                :key="restaurantIndex"
                 class="restaurant-card">
 
                 <v-card-title>
-                    <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
+                    <a :href="restaurantMeals(restaurantIndex).restaurantMenuUrl" target="_blank" 
                         class="hide-link-style grey--text text--darken-1">
-                        {{ restaurantMeals(loopIndex)[0].restaurantName }}
+                        {{restaurantMeals(restaurantIndex).restaurantName}}
                     </a>
                 </v-card-title>
 
-                <v-data-table
-                    :headers="headers" 
-                    :items="restaurantMeals(loopIndex)"
-                    hide-default-header
-                    hide-default-footer
-                    hide-actions
-                    disable-pagination
-                    disable-sort
-                    group-by="labelName"
-                    class="restaurant-card-table">
-
-                    <template v-slot:item="props">
-                        <tr>
-                            <td>{{ props.item.dishDescription }}</td>
-                            <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK + ":-" : "*PRIS SAKNAS*" }}sdf</span></td>
-                        </tr>
-                    </template>
-
-                </v-data-table>
+                <v-card-text>
+                    <v-simple-table dense>
+                        <template v-for="(labelGroup, alternativeIndex) in restaurantMeals(restaurantIndex).alternativesDishesPricesGroupedByLabel">
+                            <thead :key="`${restaurantIndex}-${alternativeIndex}-${labelGroup.labelName}`">
+                                <tr>
+                                    <th colspan="2">{{labelGroup.labelName}}</th>
+                                </tr>
+                            </thead>
+                            <tbody :key="labelGroup.labelName">
+                                <tr v-for="alternative in labelGroup.alternativesDishesPrices" :key="alternative.dishDescription">
+                                    <td>{{ alternative.dishDescription }}</td>
+                                    <td>{{ alternative.priceSEK > 0 ? +alternative.priceSEK + ":-" : "*PRIS SAKNAS*"  }}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                        </v-simple-table>
+                </v-card-text>
             </v-card>
 
         </div>
         <div class="d-none d-md-block multi-column-2">            
             <!--hide on screens smaller than md-->
-
+<!--
             <v-card
                 v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
                 v-bind:key="loopIndex"
                 class="restaurant-card">
 
                 <v-card-title>
-                    <a :href="restaurantMeals(loopIndex)[0].restaurantMenuUrl" target="_blank" 
+                    <a :href="restaurantMeals(loopIndex).restaurantMenuUrl" target="_blank" 
                         class="hide-link-style grey--text text--darken-1">
-                        {{ restaurantMeals(loopIndex)[0].restaurantName }}
+                        {{ restaurantMeals(loopIndex).restaurantName }}
                     </a>
                 </v-card-title>
 
@@ -71,7 +69,7 @@
 
                 </v-data-table>
             </v-card>
-
+-->
         </div>
     </section>
 
@@ -83,7 +81,7 @@ import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import { RestaurantMealsGroupedByLabel } from '../models/RestaurantMealsGroupedByLabel';
 import { AlternativeLabelDishPrice } from '../dto/AlternativeLabelDishPrice';
 import { AlternativesDishesPricesGroupedByLabel } from '../models/AlternativesDishesPricesGroupedByLabel';
-
+import _, { groupBy } from 'lodash';
 @Component
 export default class RestaurantsDishes extends Vue {
     @Prop() restaurantsMealsDay!: RestaurantMealsDay[];
@@ -124,27 +122,21 @@ export default class RestaurantsDishes extends Vue {
         return sortedRestaurantMeals;
       }
 
-      private restaurantMeals(restaurantListIndex: number): RestaurantMealsGroupedByLabel[] {
+      private restaurantMeals(restaurantListIndex: number): RestaurantMealsGroupedByLabel {
+
         const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
         const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
-        const restaurantMeals =
-          this.sortedRestaurantMeals[restaurantListIndex].alternativeLabelDishPrices.map( (d) => {
-            // RestaurantMeal
-            const value = false;
-            const restaurantMeal =
-                new RestaurantMealsGroupedByLabel(
-                    value,
-                    restaurantName,
-                    restaurantMenuUrl,
-                    new AlternativesDishesPricesGroupedByLabel()
-                    
-                    new AlternativeLabelDishPrice(
-                    d.indexNumber, d.labelName, d.dishDescription, +d.priceSEK),
-                    
-                );
-            return restaurantMeal;
-        });
-        return restaurantMeals;
+        
+        const alternativesDishesPricesGroupedByLabel =
+            _(this.sortedRestaurantMeals[restaurantListIndex].alternativeLabelDishPrices)
+           .groupBy( (r) => { return r.labelName })            
+            .map( (value, key) => {  
+                const a = new AlternativesDishesPricesGroupedByLabel( key, value );
+                return a })
+            .value();
+
+        const restaurantMealsGroupedByLabel = new RestaurantMealsGroupedByLabel(restaurantName, restaurantMenuUrl,alternativesDishesPricesGroupedByLabel)
+        return restaurantMealsGroupedByLabel;
       }
 }
 </script>

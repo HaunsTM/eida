@@ -66,7 +66,7 @@ export default class Home extends Vue {
     }
 
     private get allDayIndexesInAWeek(): number[] {
-        const allDayIndexesInAWeek = [0,1,2,3,4,5,6]
+        const allDayIndexesInAWeek = [0, 1, 2, 3, 4, 5, 6];
         return allDayIndexesInAWeek;
     }
     private atLeastOneRestaurantHasOneMealInCurrentWeek(): boolean {
