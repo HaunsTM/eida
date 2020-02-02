@@ -37,8 +37,8 @@
             </v-card>
 
         </v-tab-item>
-
     </v-tabs>
+    
 </template>
 
 <script lang="ts">

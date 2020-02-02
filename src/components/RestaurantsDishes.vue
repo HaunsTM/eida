@@ -17,8 +17,8 @@
                     <v-simple-table
                         :dense="$vuetify.breakpoint.name === 'xs'">
                         <template v-for="(labelGroup, alternativeIndex) in restaurantsMealsGroupedByLabel[restaurantIndex].alternativesDishesPricesGroupedByLabel">
-                            <thead :key="`${restaurantIndex}-${alternativeIndex}-${labelGroup.labelName}`">
-                                <tr>
+                            <thead :key="`${restaurantIndex}-${alternativeIndex}-${labelGroup.labelName}`" class="label-header">
+                                <tr style="border: 1px solid red; ">
                                     <th>
                                         <img
                                             :src="getLabelImageAndNameDescription(labelGroup.labelName).imgSrc"
@@ -26,7 +26,7 @@
                                             class="label-image"/>
                                     </th>
                                     <th>
-                                        <span class="title">{{getLabelImageAndNameDescription(labelGroup.labelName).nameDescription}}</span>
+                                        <span class="caption label-name">{{getLabelImageAndNameDescription(labelGroup.labelName).nameDescription}}</span>
                                     </th>
                                     <th></th>
                                 </tr>
@@ -336,6 +336,12 @@ export default class RestaurantsDishes extends Vue {
         display: none;
     }
     */
+    .label-header th {
+        padding-top: 0.6rem;
+    }
+    .label-name {
+        text-transform: uppercase;
+    }
     @media screen and (max-width: 600px) {
         .restaurant-card {
             margin-bottom: 0.4rem;

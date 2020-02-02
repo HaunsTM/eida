@@ -21,7 +21,7 @@
             <v-content>
 
                 <!-- Provides the application the proper gutter -->
-                <v-container >
+                <v-container fluid>
                     <v-row align="start" justify="center">
                         <v-col cols="12">
                             <div v-if="userHasAllowedLocalStorage">
