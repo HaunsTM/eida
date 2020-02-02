@@ -35,8 +35,8 @@ import { AlternativeLabelDishPriceDay } from '../dto/AlternativeLabelDishPriceDa
 
             currentWeekdayIndex: 'getCurrentWeekdayIndex',
             currentWeekNumber: 'getCurrentWeekNumber',
-            currentYear: 'getCurrentYear'
-        }), 
+            currentYear: 'getCurrentYear',
+        }),
     },
 })
 export default class Home extends Vue {
@@ -48,10 +48,9 @@ export default class Home extends Vue {
     private currentYear!: number;
 
     private internalAreasMealsRestaurants = new Array<AreaRestaurantsMeals>();
-    
+
     @Watch('userSelectedAreas')
     private async fetchAreasMealsRestaurants(): Promise<void> {
-        //const ds = new DataService();
         const currentWeekNumber = this.currentWeekNumber;
         const currentYear = this.currentYear;
         const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (a) => {
@@ -69,50 +68,58 @@ export default class Home extends Vue {
         const allDayIndexesInAWeek = [0, 1, 2, 3, 4, 5, 6];
         return allDayIndexesInAWeek;
     }
+
     private atLeastOneRestaurantHasOneMealInCurrentWeek(): boolean {
+
         let atLeastOneRestaurantHasOneMealInCurrentWeek = false;
+
         if (this.internalAreasMealsRestaurants) {
-            const mealsPerAreaRestaurantsAndDays = 
+            const mealsPerAreaRestaurantsAndDays =
                 this.mealsPerAreaRestaurantsAndDays( this.allDayIndexesInAWeek, this.internalAreasMealsRestaurants );
             atLeastOneRestaurantHasOneMealInCurrentWeek = mealsPerAreaRestaurantsAndDays.length > 0;
         }
         return atLeastOneRestaurantHasOneMealInCurrentWeek;
     }
 
-    private mealsPerRestaurantAndDay(dayIndexes: number[], allRestaurantsMealsInArea: RestaurantMealsDay[]): AlternativeLabelDishPriceDay[] {
+    private mealsPerRestaurantAndDay(
+        dayIndexes: number[],
+        allRestaurantsMealsInArea: RestaurantMealsDay[]): AlternativeLabelDishPriceDay[] {
+
         const arrayOfAllMealsPerRestaurantAndDay =
             allRestaurantsMealsInArea.map( (restaurant) => {
                 const allDishesForWantedDay =
-                restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
-                    const correctDayFound = dayIndexes.includes(aLDP.dayIndex);
-                    return correctDayFound;
-                });
+                    restaurant.alternativeLabelDishPrices.filter( (aLDP) => {
+                        const correctDayFound = dayIndexes.includes( aLDP.dayIndex );
+                        return correctDayFound;
+                    });
                 return allDishesForWantedDay;
             });
         const mealsPerRestaurantAndDay = arrayOfAllMealsPerRestaurantAndDay
-            .flatMap(x=>x);
+            .flatMap( ( x ) => {
+                return x; });
         return mealsPerRestaurantAndDay;
     }
 
-    private mealsPerAreaRestaurantsAndDays(dayIndexes: number[], areasMealsRestaurants: AreaRestaurantsMeals[]): AlternativeLabelDishPriceDay[] {
+    private mealsPerAreaRestaurantsAndDays(
+        dayIndexes: number[],
+        areasMealsRestaurants: AreaRestaurantsMeals[]): AlternativeLabelDishPriceDay[] {
 
         const mealsPerAreaRestaurantsAndDay =
             areasMealsRestaurants.map( (area) => {
                 const allRestaurantsInArea = area.restaurantMealsDay;
                 return this.mealsPerRestaurantAndDay(dayIndexes, allRestaurantsInArea)
             })
-        .flatMap(x=>x)
-        .filter(x=> this.isEligible(x));
+        .flatMap( ( x ) => { return x; } )
+        .filter( ( x ) => { return this.isEligible( x ); } );
 
         return mealsPerAreaRestaurantsAndDay;
     }
 
-    isEligible(value: any) {
+    private isEligible(value: any) {
         // used to identify null/undefined/empty/false-values in an array
-        if(value !== false || value !== null || value !== 0 || value !== '' || value !== undefined) {
+        if (value !== false || value !== null || value !== 0 || value !== '' || value !== undefined) {
             return value;
-        }
-        else {
+        } else {
             return false;
         }
     }

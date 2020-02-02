@@ -32,7 +32,7 @@ export enum LabelName {
     SNACKS = 'snacks',
     SOUP = 'soup',
     STARTER = 'starter',
-    SUSHI = 'starter',
+    SUSHI = 'sushi',
     SUPPER = 'supper',
     THAI = 'thai',
     VEGETARIAN = 'vegetarian',

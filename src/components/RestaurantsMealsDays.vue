@@ -56,8 +56,8 @@ import { Area } from '../dto/repository/entities/Area';
 })
 export default class RestaurantsMealsDays extends Vue {
 
-    @Prop() areasMealsRestaurants!:  AreaRestaurantsMeals[];
-    @Prop() currentWeekdayIndex!: number;
+    @Prop() public areasMealsRestaurants!: AreaRestaurantsMeals[];
+    @Prop() public currentWeekdayIndex!: number;
 
     private readonly tabsDays = [
         { index: 0, name: 'Måndag', weekDayIndex: 1 },
@@ -72,11 +72,17 @@ export default class RestaurantsMealsDays extends Vue {
     private activeTab: number = 1;
     
     private restaurantsMealsDay(weekDayIndex: number, area: Area): RestaurantMealsDay[]  {
+
         let areaMealsRestaurants = this.areasMealsRestaurants.find( (aMR) => {
             const found = area.id === aMR.area.id;
             return found;
         });
-        areaMealsRestaurants = areaMealsRestaurants ? areaMealsRestaurants : new AreaRestaurantsMeals(new Area(0,""), new Array<RestaurantMealsDay>());
+
+        areaMealsRestaurants =
+            areaMealsRestaurants ?
+                areaMealsRestaurants :
+                new AreaRestaurantsMeals( new Area(0, ''), new Array<RestaurantMealsDay>() );
+
         const restaurantsMealsDay = areaMealsRestaurants.restaurantMealsDay
             .map( (r) => {
                 const mealsPerDayAndRestaurant =
@@ -84,7 +90,8 @@ export default class RestaurantsMealsDays extends Vue {
                         r.restaurantName,
                         r.restaurantMenuUrl,
                         r.alternativeLabelDishPrices
-                            .filter( (d) => { const correctDay = d.dayIndex === weekDayIndex;
+                            .filter( (d) => {
+                                const correctDay = d.dayIndex === weekDayIndex;
                                 return correctDay;
                             }),
                     );
