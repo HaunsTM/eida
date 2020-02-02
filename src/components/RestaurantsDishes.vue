@@ -1,23 +1,22 @@
 <template>
 
     <section>
-        <div class="d-md-none single-column">
-            <!--hide on screens wider than md-->
+        <div class="coulumn-configuration">
             <v-card
-                v-for="(restaurantMealsDay, restaurantIndex) in restaurantsMealsDay"
+                v-for="(restaurantMealsDay, restaurantIndex) in restaurantsMealsGroupedByLabel"
                 :key="restaurantIndex"
                 class="restaurant-card">
 
                 <v-card-title>
-                    <a :href="restaurantMeals(restaurantIndex).restaurantMenuUrl" target="_blank" 
+                    <a :href="restaurantsMealsGroupedByLabel[restaurantIndex].restaurantMenuUrl" target="_blank" 
                         class="hide-link-style grey--text text--darken-1">
-                        {{restaurantMeals(restaurantIndex).restaurantName}}
+                        {{restaurantsMealsGroupedByLabel[restaurantIndex].restaurantName}}
                     </a>
                 </v-card-title>
-
                 <v-card-text>
-                    <v-simple-table dense>
-                        <template v-for="(labelGroup, alternativeIndex) in restaurantMeals(restaurantIndex).alternativesDishesPricesGroupedByLabel">
+                    <v-simple-table
+                        :dense="$vuetify.breakpoint.name === 'xs'">
+                        <template v-for="(labelGroup, alternativeIndex) in restaurantsMealsGroupedByLabel[restaurantIndex].alternativesDishesPricesGroupedByLabel">
                             <thead :key="`${restaurantIndex}-${alternativeIndex}-${labelGroup.labelName}`">
                                 <tr>
                                     <th colspan="2">{{labelGroup.labelName}}</th>
@@ -30,53 +29,17 @@
                                 </tr>
                             </tbody>
                         </template>
-                        </v-simple-table>
-                </v-card-text>
+                    </v-simple-table>
+                </v-card-text>                
             </v-card>
 
-        </div>
-        <div class="d-none d-md-block multi-column-2">            
-            <!--hide on screens smaller than md-->
-<!--
-            <v-card
-                v-for="(restaurantMealsDay, loopIndex) in restaurantsMealsDay"
-                v-bind:key="loopIndex"
-                class="restaurant-card">
-
-                <v-card-title>
-                    <a :href="restaurantMeals(loopIndex).restaurantMenuUrl" target="_blank" 
-                        class="hide-link-style grey--text text--darken-1">
-                        {{ restaurantMeals(loopIndex).restaurantName }}
-                    </a>
-                </v-card-title>
-
-                <v-data-table
-                    :headers="headers" 
-                    :items="restaurantMeals(loopIndex)"
-                    hide-default-header
-                    hide-default-footer
-                    disable-pagination
-                    disable-sort
-                    group-by="labelName"
-                    class="restaurant-card-table">
-
-                    <template v-slot:item="props">
-                        <tr>
-                            <td>{{ props.item.dishDescription }}</td>
-                            <td><span>{{ props.item.priceSEK > 0 ? props.item.priceSEK + ":-" : "*PRIS SAKNAS*" }}</span></td>
-                        </tr>
-                    </template>
-
-                </v-data-table>
-            </v-card>
--->
         </div>
     </section>
 
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import { RestaurantMealsGroupedByLabel } from '../models/RestaurantMealsGroupedByLabel';
 import { AlternativeLabelDishPrice } from '../dto/AlternativeLabelDishPrice';
@@ -85,59 +48,89 @@ import _, { groupBy } from 'lodash';
 @Component
 export default class RestaurantsDishes extends Vue {
     @Prop() restaurantsMealsDay!: RestaurantMealsDay[];
+    private restaurantsMealsGroupedByLabel: RestaurantMealsGroupedByLabel[] = new Array<RestaurantMealsGroupedByLabel>();
 
-      private readonly headers = [
-        { text: '', value: 'labelName' },
-        { text: '', value: 'dishDescription' },
-        { text: '', value: 'priceSEK' },
-      ];
+    private async getSortedRestaurantMealsAsync(): Promise<RestaurantMealsDay[]> {
+        // sorts restaurants-meals alphabetically based on the following conditions
+        // 1) restaurant name
+        // 2) label name
+        const sortedRestaurantMealsPromise: Promise<RestaurantMealsDay[]> = new Promise( (resolve, reject) => {
+            try {
+                const sortedRestaurantMeals =
+                    this.restaurantsMealsDay
+                    .sort((a, b) => {
+                        if (a.restaurantName < b.restaurantName) {
+                                return -1;
+                            }
+                        if (a.restaurantName > b.restaurantName) {
+                                return 1;
+                            }
+                        return 0;
+                    })
+                    .map( (r) => {
 
-      private get sortedRestaurantMeals(): RestaurantMealsDay[] {
-        const sortedRestaurantMeals =
-            this.restaurantsMealsDay
-            .sort((a, b) => {
-                if (a.restaurantName < b.restaurantName) {
-                        return -1;
-                    }
-                if (a.restaurantName > b.restaurantName) {
-                        return 1;
-                    }
-                return 0;
-            })
-            .map( (r) => {
+                        const sortedAlternativeLabelDishPrices = r.alternativeLabelDishPrices.sort((a, b) => {
+                            if (a.labelName < b.labelName) {
+                                return -1;
+                            }
+                            if (a.labelName > b.labelName) {
+                                return 1;
+                            }
+                            return 0;
+                        });
 
-                const sortedAlternativeLabelDishPrices = r.alternativeLabelDishPrices.sort((a, b) => {
-                    if (a.labelName < b.labelName) {
-                        return -1;
-                    }
-                    if (a.labelName > b.labelName) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                r.alternativeLabelDishPrices = sortedAlternativeLabelDishPrices;
-                return r;
-            });
-        return sortedRestaurantMeals;
-      }
-
-      private restaurantMeals(restaurantListIndex: number): RestaurantMealsGroupedByLabel {
-
-        const restaurantName = this.sortedRestaurantMeals[restaurantListIndex].restaurantName;
-        const restaurantMenuUrl = this.sortedRestaurantMeals[restaurantListIndex].restaurantMenuUrl;
+                        r.alternativeLabelDishPrices = sortedAlternativeLabelDishPrices;
+                        return r;
+                    });
+                resolve(sortedRestaurantMeals);
+            } catch (e) {
+                reject(e);
+            } 
+        });
         
-        const alternativesDishesPricesGroupedByLabel =
-            _(this.sortedRestaurantMeals[restaurantListIndex].alternativeLabelDishPrices)
-           .groupBy( (r) => { return r.labelName })            
-            .map( (value, key) => {  
-                const a = new AlternativesDishesPricesGroupedByLabel( key, value );
-                return a })
-            .value();
-
-        const restaurantMealsGroupedByLabel = new RestaurantMealsGroupedByLabel(restaurantName, restaurantMenuUrl,alternativesDishesPricesGroupedByLabel)
-        return restaurantMealsGroupedByLabel;
+        return sortedRestaurantMealsPromise;
       }
+
+      private async getRestaurantMealsGroupedByLabelAsync(
+          sortedRestaurantMeal: RestaurantMealsDay): Promise<RestaurantMealsGroupedByLabel> {
+          
+        
+        const restaurantMealsGroupedByLabelPromise: Promise<RestaurantMealsGroupedByLabel> = new Promise( (resolve, reject) => {
+            try {
+                const restaurantName = sortedRestaurantMeal.restaurantName;
+                const restaurantMenuUrl = sortedRestaurantMeal.restaurantMenuUrl;
+                
+                const alternativesDishesPricesGroupedByLabel =
+                    _(sortedRestaurantMeal.alternativeLabelDishPrices)
+                .groupBy( (r) => { return r.labelName })            
+                    .map( (value, key) => {  
+                        const a = new AlternativesDishesPricesGroupedByLabel( key, value );
+                        return a })
+                    .value();
+
+                const restaurantMealsGroupedByLabel = new RestaurantMealsGroupedByLabel(restaurantName, restaurantMenuUrl,alternativesDishesPricesGroupedByLabel)
+                resolve(restaurantMealsGroupedByLabel);
+            } catch (e) {
+                reject(e);
+            }
+        });
+        return restaurantMealsGroupedByLabelPromise;
+      }
+
+    @Watch('restaurantsMealsDay')
+    private async restaurantsMealsDayChanged(): Promise<void> {
+        const sortedRestaurantMeals = await this.getSortedRestaurantMealsAsync();
+        this.restaurantsMealsGroupedByLabel =
+            await Promise.all(
+                sortedRestaurantMeals.map( async (m) => {
+                    const restaurantMealsGroupedByLabel = await this.getRestaurantMealsGroupedByLabelAsync(m);
+                    return restaurantMealsGroupedByLabel;
+                })
+            );
+    }
+    private async created(): Promise<void> {
+        await this.restaurantsMealsDayChanged();
+    }
 }
 </script>
 
@@ -145,21 +138,30 @@ export default class RestaurantsDishes extends Vue {
 <style scoped>
     .hide-link-style {
         text-decoration: none;
-    }
-    .multi-column-2 > .restaurant-card {
-        margin-bottom: 0.4rem;
-        display: inline-block;
-        width: 100%
-    }
-    .single-column > .restaurant-card {
-        margin-bottom: 0.4rem;
-        max-width: 500px
-    }
-    .multi-column-2{
-        column-count: 2;
-        column-gap: 1rem;
-    }
+    } 
+    /*   
     .restaurant-card-table >>> button {
         display: none;
+    }
+    */
+    @media screen and (max-width: 600px) {
+        .restaurant-card {
+            margin-bottom: 0.4rem;
+            max-width: 500px
+        }
+        .coulumn-configuration {
+
+        }
+    }
+    @media screen and (min-width: 601px) {
+        .restaurant-card {
+            margin-bottom: 0.4rem;
+            display: inline-block;
+            width: 100%;
+        }
+        .coulumn-configuration {
+            column-count: 2;
+            column-gap: 1rem;
+        }
     }
 </style>
