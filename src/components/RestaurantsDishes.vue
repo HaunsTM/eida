@@ -351,9 +351,6 @@ export default class RestaurantsDishes extends Vue {
             width: 24px;
             display: inline-block;
         }
-        .coulumn-configuration {
-            column-count: 1;
-        }
     }
     @media screen and (min-width: 601px) {
         .restaurant-card {
@@ -364,10 +361,6 @@ export default class RestaurantsDishes extends Vue {
         .label-image {
             width: 36px;
             display: inline-block;
-        }
-        .coulumn-configuration {
-            column-count: 2;
-            column-gap: 1rem;
         }
     }
 </style>

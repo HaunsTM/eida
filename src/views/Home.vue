@@ -107,7 +107,7 @@ export default class Home extends Vue {
         const mealsPerAreaRestaurantsAndDay =
             areasMealsRestaurants.map( (area) => {
                 const allRestaurantsInArea = area.restaurantMealsDay;
-                return this.mealsPerRestaurantAndDay(dayIndexes, allRestaurantsInArea)
+                return this.mealsPerRestaurantAndDay(dayIndexes, allRestaurantsInArea);
             })
         .flatMap( ( x ) => { return x; } )
         .filter( ( x ) => { return this.isEligible( x ); } );

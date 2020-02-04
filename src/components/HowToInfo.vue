@@ -1,19 +1,42 @@
 <template>
-    <v-card
-    class="mx-auto"
-    outlined
-  >
-    <v-card-text>
-      <div>sulten.se</div>
-      <p class="display-1 text--primary">
-        Hur funkar det?
-      </p>
-      <div class="text--primary">
-        1) Klicka på symbolen för inställningar ("hamburgermenyn") i verktygsfältet ovan.<br />
-        2) Bocka för de områden du vill se. 
-      </div>
-    </v-card-text>
-  </v-card>
+    <section class="coulumn-configuration">
+        <v-card class="instruction-card">
+            <v-card-text>
+                <p class="display-1 text--primary">
+                    1. Klicka på symbolen för inställningar
+                </p>
+                <div class="text--primary">                    
+                    <img
+                        src="images/howTo/1.png"
+                        class="instruction-image"/>
+                </div>
+            </v-card-text>
+        </v-card>
+        <v-card class="instruction-card">
+            <v-card-text>
+                <p class="display-1 text--primary">
+                    2. Markera vad du vill se
+                </p>
+                <div class="text--primary">                    
+                    <img
+                        src="images/howTo/2.png"
+                        class="instruction-image"/>
+                </div>
+            </v-card-text>
+        </v-card>
+        <v-card class="instruction-card">
+            <v-card-text>
+                <p class="display-1 text--primary">
+                    3. Varsågod!
+                </p>
+                <div class="text--primary">                    
+                    <img
+                        src="images/howTo/3.png"
+                        class="instruction-image"/>
+                </div>
+            </v-card-text>
+        </v-card>
+    </section>
 </template>
 
 <script lang="ts">
@@ -28,5 +51,12 @@ export default class HowToInfo extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .instruction-card {
+        margin-bottom: 0.4rem;
+        max-width: 500px
+    }
+    .instruction-image {
+        display: inline-block;
+        width: 200px;
+    }
 </style>

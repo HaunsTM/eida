@@ -43,7 +43,7 @@
             <v-footer
                 color="indigo"
                 app>
-                <span class="white--text"><i>"-Eid mé sulten pongkt ess ei!"</i> - vecka {{currentWeekNumber}} - {{currentYear}}</span>
+                <span class="white--text"><i>-Eid mé sulten pongkt ess ei!</i> - vecka {{currentWeekNumber}} - {{currentYear}}</span>
             </v-footer>
 
         </v-app>
@@ -101,4 +101,15 @@ export default class App extends Vue {
 </script>
 
 <style>
+    @media screen and (max-width: 600px) {
+        .coulumn-configuration {
+            column-count: 1;
+        }
+    }
+    @media screen and (min-width: 601px) {
+        .coulumn-configuration {
+            column-count: 2;
+            column-gap: 1rem;
+        }
+    }
 </style>
