@@ -49,7 +49,7 @@ import { mapActions, mapGetters } from 'vuex';
   computed: {
         ...mapGetters({
         availableAreas: 'getAvailableAreas',
-        userSelectedAreas: 'getUserSelectedAreas'
+        userSelectedAreas: 'getUserSelectedAreas',
     }),
   },
 })
@@ -63,8 +63,8 @@ export default class AreasListDrawer extends Vue {
         const userSelectedAreas = this.$store.getters.getUserSelectedAreas as Area[];
         const userSelectedAreasNames =
             userSelectedAreas
-           .map( (a) => {return a as Area})
-           .map( (a) => { return a.name});
+           .map( (a) => { return a as Area; })
+           .map( (a) => { return a.name; });
         return userSelectedAreasNames;
     }
     private set userSelectedAreasNames(areaNames: string[]) {

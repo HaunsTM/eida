@@ -39,12 +39,12 @@
                             </tbody>
                         </template>
                     </v-simple-table>
-                </v-card-text>                
+                </v-card-text>
             </v-card>
         </div>
         
         <div class="coulumn-configuration" v-else>
-            <NoMealsForSelectedAreaThisDay />
+            <NoMealsForSelectedAreaThisDay class="restaurant-card"/>
         </div>
     </section>
 
@@ -64,16 +64,18 @@ import { LabelImageAndNameDescription } from '../models/LabelImageAndNameDescrip
 import { LabelName } from '../enum/LabelName';
 @Component({
     components: {
-        NoMealsForSelectedAreaThisDay
+        NoMealsForSelectedAreaThisDay,
     },
 })
 export default class RestaurantsDishes extends Vue {
-    @Prop() restaurantsMealsDay!: RestaurantMealsDay[];
-    private restaurantsMealsGroupedByLabel: RestaurantMealsGroupedByLabel[] = new Array<RestaurantMealsGroupedByLabel>();
+    @Prop() public restaurantsMealsDay!: RestaurantMealsDay[];
+
+    private restaurantsMealsGroupedByLabel: RestaurantMealsGroupedByLabel[] =
+        new Array<RestaurantMealsGroupedByLabel>();
 
     private replaceInvalidCharactersInDescription(unfiltered: string): string {
-        const reg = new RegExp(String.fromCharCode(160), "g");
-        const filteredString = unfiltered.replace(reg, " ");
+        const reg = new RegExp(String.fromCharCode(160), 'g');
+        const filteredString = unfiltered.replace(reg, ' ');
         return filteredString;
     }
     private getLabelImageAndNameDescription(labelNameString: LabelName): LabelImageAndNameDescription {
@@ -81,7 +83,7 @@ export default class RestaurantsDishes extends Vue {
         const dishImgBaseUrl = 'images/dishes/';
         let imgSrc: string = dishImgBaseUrl;
         let nameDescriptionSE = 'NO SWEDISH DESCRIPTION';
-        
+
         switch (labelName) {
 
             case LabelName.ARABIC:
@@ -235,7 +237,9 @@ export default class RestaurantsDishes extends Vue {
 
         }
 
-        const labelImageAndNameDescription = new LabelImageAndNameDescription(dishImgBaseUrl + imgSrc, nameDescriptionSE);
+        const labelImageAndNameDescription =
+            new LabelImageAndNameDescription(dishImgBaseUrl + imgSrc, nameDescriptionSE);
+
         return labelImageAndNameDescription;
     }
     private async getSortedRestaurantMealsAsync(): Promise<RestaurantMealsDay[]> {
@@ -273,9 +277,9 @@ export default class RestaurantsDishes extends Vue {
                 resolve(sortedRestaurantMeals);
             } catch ( e ) {
                 reject( e );
-            } 
+            }
         });
-        
+
         return sortedRestaurantMealsPromise;
       }
 
@@ -287,11 +291,11 @@ export default class RestaurantsDishes extends Vue {
                 try {
                     const restaurantName = sortedRestaurantMeal.restaurantName;
                     const restaurantMenuUrl = sortedRestaurantMeal.restaurantMenuUrl;
-                    
+
                     const alternativesDishesPricesGroupedByLabel =
                         _(sortedRestaurantMeal.alternativeLabelDishPrices)
-                    .groupBy( ( r ) => { return r.labelName })
-                        .map( ( value, key ) => { 
+                    .groupBy( ( r ) => { return r.labelName; })
+                        .map( ( value, key ) => {
                             const a = new AlternativesDishesPricesGroupedByLabel( key, value );
                             return a; })
                         .value();
@@ -330,12 +334,7 @@ export default class RestaurantsDishes extends Vue {
 <style scoped>
     .hide-link-style {
         text-decoration: none;
-    } 
-    /*   
-    .restaurant-card-table >>> button {
-        display: none;
     }
-    */
     .label-header th {
         padding-top: 0.6rem;
     }

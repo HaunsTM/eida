@@ -70,7 +70,7 @@ export default class RestaurantsMealsDays extends Vue {
         { index: 6, name: 'Söndag', weekDayIndex: 0 },
       ];
     private activeTab: number = 1;
-    
+
     private restaurantsMealsDay(weekDayIndex: number, area: Area): RestaurantMealsDay[]  {
 
         let areaMealsRestaurants = this.areasMealsRestaurants.find( (aMR) => {

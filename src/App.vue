@@ -73,7 +73,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
             userSelectedAreas: 'getUserSelectedAreas',
 
             currentWeekNumber: 'getCurrentWeekNumber',
-            currentYear: 'getCurrentYear'
+            currentYear: 'getCurrentYear',
         }),
     },
 })
@@ -94,9 +94,7 @@ export default class App extends Vue {
     }
     private onUserHasAllowedLocalStorage(value: boolean): void {
         this.$store.dispatch('setUserHasAllowedLocalStorage', value);
-    }
-
-    
+    }    
 }
 </script>
 
