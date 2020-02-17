@@ -86,6 +86,10 @@ export default class RestaurantsDishes extends Vue {
 
         switch (labelName) {
 
+            case LabelName.A_LA_CARTE:
+                imgSrc = 'a_la_carte.png';
+                nameDescriptionSE = 'À la carte';
+                break;
             case LabelName.ARABIC:
                 imgSrc = 'arabic.png';
                 nameDescriptionSE = 'Arabiskt';
