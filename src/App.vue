@@ -14,7 +14,8 @@
                 color="indigo"
                 dark>
                 <v-app-bar-nav-icon v-if="userHasAllowedLocalStorage" @click.stop="toggleMenu" />
-                <v-toolbar-title>Vad är du sugen på idag?</v-toolbar-title>
+                <v-toolbar-title class="hidden-xs-only">Äta vecka {{currentWeekNumber}}, {{currentYear}} - Vad är du sugen på idag?</v-toolbar-title>
+                <v-toolbar-title class="hidden-sm-and-up">Matsedlar v. {{currentWeekNumber}}, {{currentYear}}</v-toolbar-title>
             </v-app-bar>
             
             <!-- Sizes your content based upon application components -->
@@ -43,7 +44,10 @@
             <v-footer
                 color="indigo"
                 app>
-                <span class="white--text"><i>-Eid mé sulten pongkt ess ei!</i> - vecka {{currentWeekNumber}} - {{currentYear}}</span>
+                <div class="d-flex justify-space-between">                    
+                    <div class="white--text"><i>Eid mé sulten pongkt ess ei!</i> </div>
+                    <div class="white--text"> - sulten.se</div>
+                </div>
             </v-footer>
 
         </v-app>
