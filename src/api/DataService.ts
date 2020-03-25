@@ -1,5 +1,5 @@
 
-import { Area } from '../dto/repository/entities/Area';
+import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
 import { AreaRestaurants } from '../dto/AreaRestaurants';
 import { RestaurantMeal } from '../dto/RestaurantMeal';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
@@ -7,15 +7,15 @@ import axios from 'axios';
 
 export default class DataService {
 
-    public readonly baseURL = 'https://api.sulten.se';
+    public readonly baseURL = 'localhost:8080/menu/allAreasPerUrbanAreas'; //'https://api.sulten.se';
 
     // Lifecycle hook
-    public async allAreas(): Promise<Area[]>  {
+    public async allUrbanAreaAreas(): Promise<UrbanAreaAreas[]>  {
 
-        const result = await axios.get(`${this.baseURL}/menu/allAreas`);
-        const allAreas: Area[] = JSON.parse(JSON.stringify(result.data));
+        const result = await axios.get(`${this.baseURL}/menu/allAreasPerUrbanAreas`);
+        const allUrbanAreaAreas: UrbanAreaAreas[] = JSON.parse(JSON.stringify(result.data));
 
-        return allAreas;
+        return allUrbanAreaAreas;
     }
     public async mealsPerAreaWeekYear(
         areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealsDay[]>  {

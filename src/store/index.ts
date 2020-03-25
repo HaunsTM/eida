@@ -6,13 +6,14 @@ import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import { Area } from '@/dto/repository/entities/Area';
 
 import moment from 'moment';
+import { UrbanAreaAreas } from '@/dto/UrbanAreaAreas';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         // area
-        availableAreas: Array<Area>(),
+        availableAreas: Array<UrdbanAreaAreas>(),
         userSelectedAreas: Array<Area>(),
 
         // local storage
@@ -40,8 +41,8 @@ export default new Vuex.Store({
             localStorage.setItem('userSelectedAreas', JSON.stringify(userSelectedAreas));
         },
 
-        SET_AVALIABLE_AREAS(state, availableAreas: Area[]): void {
-            state.availableAreas = availableAreas;
+        SET_AVALIABLE_URBAN_AREA_AREAS(state, availableUrbanAreaAreas: UrbanAreaAreas[]): void {
+            state.availableUrbanAreaAreas = availableUrbanAreaAreas;
         },
 
         // local storage
@@ -87,11 +88,11 @@ export default new Vuex.Store({
         },
 
         // area
-        async fetchAvailableAreas(context): Promise<void> {
+        async fetchAvailableUrbanAreaAreas(context): Promise<void> {
             const ds = new DataService();
-            const availableAreas = await ds.allAreas();
+            const availableUrbanAreaAreas = await ds.allUrbanAreaAreas();
 
-            context.commit('SET_AVALIABLE_AREAS', availableAreas);
+            context.commit('SET_AVALIABLE_URBAN_AREA_AREAS', availableUrbanAreaAreas);
         },
         setUserSelectedAreas(context, userSelectedAreas: Area[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
