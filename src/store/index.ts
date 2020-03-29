@@ -4,16 +4,16 @@ import Vuex from 'vuex';
 import DataService from '../api/DataService';
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import { Area } from '@/dto/repository/entities/Area';
+import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
 
 import moment from 'moment';
-import { UrbanAreaAreas } from '@/dto/UrbanAreaAreas';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         // area
-        availableAreas: Array<UrdbanAreaAreas>(),
+        availableAreasPerUrbanAreas: Array<UrbanAreaAreas>(),
         userSelectedAreas: Array<Area>(),
 
         // local storage
@@ -41,8 +41,8 @@ export default new Vuex.Store({
             localStorage.setItem('userSelectedAreas', JSON.stringify(userSelectedAreas));
         },
 
-        SET_AVALIABLE_URBAN_AREA_AREAS(state, availableUrbanAreaAreas: UrbanAreaAreas[]): void {
-            state.availableUrbanAreaAreas = availableUrbanAreaAreas;
+        SET_AVALIABLE_URBAN_AREA_AREAS(state, availableAreasPerUrbanAreas: UrbanAreaAreas[]): void {
+            state.availableAreasPerUrbanAreas = availableAreasPerUrbanAreas;
         },
 
         // local storage
@@ -84,15 +84,15 @@ export default new Vuex.Store({
             context.commit('SET_CURRENT_WEEK_NUMBER');
             context.commit('SET_CURRENT_YEAR');
 
-            await context.dispatch('fetchAvailableAreas');
+            await context.dispatch('fetchAllAreasPerUrbanAreas');
         },
 
         // area
-        async fetchAvailableUrbanAreaAreas(context): Promise<void> {
+        async fetchAllAreasPerUrbanAreas(context): Promise<void> {
             const ds = new DataService();
-            const availableUrbanAreaAreas = await ds.allUrbanAreaAreas();
+            const allAreasPerUrbanAreas = await ds.allAreasPerUrbanAreas();
 
-            context.commit('SET_AVALIABLE_URBAN_AREA_AREAS', availableUrbanAreaAreas);
+            context.commit('SET_AVALIABLE_URBAN_AREA_AREAS', allAreasPerUrbanAreas);
         },
         setUserSelectedAreas(context, userSelectedAreas: Area[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
@@ -114,8 +114,8 @@ export default new Vuex.Store({
     },
     getters: {
         // area
-        getAvailableAreas(state): Area[] {
-            return state.availableAreas;
+        getAvailableAreasPerUrbanAreas(state): UrbanAreaAreas[] {
+            return state.availableAreasPerUrbanAreas;
         },
         getUserSelectedAreas(state): Area[] {
             return state.userSelectedAreas;
@@ -145,4 +145,3 @@ export default new Vuex.Store({
 
     },
 });
-

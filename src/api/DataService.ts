@@ -7,15 +7,15 @@ import axios from 'axios';
 
 export default class DataService {
 
-    public readonly baseURL = 'localhost:8080/menu/allAreasPerUrbanAreas'; //'https://api.sulten.se';
+    public readonly baseURL = 'https://api.sulten.se';
 
     // Lifecycle hook
-    public async allUrbanAreaAreas(): Promise<UrbanAreaAreas[]>  {
+    public async allAreasPerUrbanAreas(): Promise<UrbanAreaAreas[]>  {
 
         const result = await axios.get(`${this.baseURL}/menu/allAreasPerUrbanAreas`);
-        const allUrbanAreaAreas: UrbanAreaAreas[] = JSON.parse(JSON.stringify(result.data));
+        const allAreasPerUrbanAreas: UrbanAreaAreas[] = JSON.parse(JSON.stringify(result.data));
 
-        return allUrbanAreaAreas;
+        return allAreasPerUrbanAreas;
     }
     public async mealsPerAreaWeekYear(
         areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealsDay[]>  {
