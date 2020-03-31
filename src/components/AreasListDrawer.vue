@@ -12,24 +12,25 @@
                     <v-list-item-title>Område</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+            {{availableAreasPerUrbanAreas}}
             <template v-for="(currentUrbanAreaWithAreas, currentUrbanAreaWithAreasIndex) in availableAreasPerUrbanAreas">
                 {{currentUrbanAreaWithAreas.urbanAreaName}}
                 
-                <template v-for="(item, index) in currentUrbanAreaWithAreas.areas">
+                <template v-for="(currentArea, index) in currentUrbanAreaWithAreas.areas">
                     <v-list-item
-                        :key="item.id"
-                        :value="item.name"
+                        :key="currentArea.id"
+                        :value="currentArea.name"
                         active-class="deep-purple--text text--accent-4"
                     >
                         <template v-slot:default="{ active, toggle }">
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.name"></v-list-item-title>
+                                <v-list-item-title v-text="currentArea.name"></v-list-item-title>
                             </v-list-item-content>
 
                             <v-list-item-action>
                                 <v-checkbox
                                     :input-value="active"
-                                    :true-value="item.name"
+                                    :true-value="currentArea.id"
                                     color="deep-purple accent-4"
                                     @click="toggle"
                                 ></v-checkbox>
@@ -60,8 +61,10 @@ import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
 export default class AreasListDrawer extends Vue {
 
 
-    private get availableAreasPerUrbanAreas(): Area[] {
-        return this.$store.getters.getAvailableAreasPerUrbanAreas;
+    private get availableAreasPerUrbanAreas(): UrbanAreaAreas[] {
+        const availableAreasPerUrbanAreas = this.$store.getters.getAvailableAreasPerUrbanAreas;
+        debugger;
+        return availableAreasPerUrbanAreas;
     }
     private get userSelectedAreasNames(): string[] {
         const userSelectedAreas = this.$store.getters.getUserSelectedAreas as Area[];
@@ -69,17 +72,16 @@ export default class AreasListDrawer extends Vue {
             userSelectedAreas
            .map( (a) => { return a as Area; })
            .map( (a) => { return a.name; });
-           debugger;
         return userSelectedAreasNames;
     }
     private set userSelectedAreasNames(areaNames: string[]) {
         const userSelectedAreas =
             this.availableAreasPerUrbanAreas
             .filter( (a) => {
-                const isIncluded = areaNames.includes(a.name);
+            debugger;
+                const isIncluded = areaNames.includes(a.urbanAreaName);
                 return isIncluded;
             });
-            debugger;
         this.$store.dispatch('setUserSelectedAreas', userSelectedAreas);
     }
 
