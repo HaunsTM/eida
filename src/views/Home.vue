@@ -23,6 +23,7 @@ import moment from 'moment';
 import DataService from '../api/DataService';
 import { AreaRestaurantsMeals } from '../models/AreaRestaurantsMeals';
 import { AlternativeLabelDishPriceDay } from '../dto/AlternativeLabelDishPriceDay';
+import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
 
 @Component({
     components: {
@@ -53,10 +54,13 @@ export default class Home extends Vue {
     private async fetchAreasMealsRestaurants(): Promise<void> {
         const currentWeekNumber = this.currentWeekNumber;
         const currentYear = this.currentYear;
-        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (a) => {
+        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (serializedUserSelectedArea) => {
             const ds = new DataService();
-            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(a.id, currentWeekNumber, currentYear);
-            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(a, mealsPerAreaWeekYear);
+            
+   //const currentUserSelectedArea = new UserSelectedArea(serializedUserSelectedArea);
+
+            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(serializedUserSelectedArea.id, currentWeekNumber, currentYear);
+            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(serializedUserSelectedArea, mealsPerAreaWeekYear);
             return currentAreaRestaurantsMeals;
         });
 

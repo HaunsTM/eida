@@ -14,7 +14,7 @@ export default new Vuex.Store({
     state: {
         // area
         availableAreasPerUrbanAreas: Array<UrbanAreaAreas>(),
-        userSelectedAreas: Array<Area>(),
+        userSelectedUrbanAreasAreas: Array<UrbanAreaAreas>(),
 
         // local storage
         userHasAllowedLocalStorage: false,
@@ -36,7 +36,7 @@ export default new Vuex.Store({
                 state.userSelectedAreas = userSelectedAreas;
             }
         },
-        SET_USER_SELECTED_AREAS(state, userSelectedAreas: Area[]): void {
+        SET_USER_SELECTED_AREAS(state, userSelectedAreas: UrbanAreaAreas[]): void {
             state.userSelectedAreas = userSelectedAreas;
             localStorage.setItem('userSelectedAreas', JSON.stringify(userSelectedAreas));
         },
@@ -117,7 +117,7 @@ export default new Vuex.Store({
         getAvailableAreasPerUrbanAreas(state): UrbanAreaAreas[] {
             return state.availableAreasPerUrbanAreas;
         },
-        getUserSelectedAreas(state): Area[] {
+        getUserSelectedAreas(state): UrbanAreaAreas[] {
             return state.userSelectedAreas;
         },
 

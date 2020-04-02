@@ -45,11 +45,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Area } from '../dto/repository/entities/Area';
+import { Convert } from '../helpers/Convert';
 import { UrbanArea } from '../dto/repository/entities/UrbanArea';
 import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
 import { mapActions, mapGetters } from 'vuex';
 import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
-
 
 @Component({
   computed: {
@@ -81,13 +81,20 @@ export default class AreasListDrawer extends Vue {
 
     private get userSelectedAreas(): string[] {
         const userSelectedAreas = this.$store.getters.getUserSelectedAreas;
+        return;
         return userSelectedAreas;
     }
 
-    private set userSelectedAreas(userSelectedAreaJSONs: string[]) {
+    private set userSelectedAreas(userSelectedAreasJSONs: string[]) {
 
-        this.$store.dispatch('setUserSelectedAreas', userSelectedAreaJSONs);
+        const userSelectedAreas = userSelectedAreasJSONs.map( (sA) => {
+            return new UserSelectedArea(sA);
+        });
+        const userSelectedUrbanAreaAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedAreas);
+        this.$store.dispatch('setUserSelectedAreas', userSelectedAreasJSONs);
     }
+
+
 
 
 
