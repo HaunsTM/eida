@@ -30,15 +30,15 @@ export default new Vuex.Store({
     },
     mutations: {
         // area
-        GET_USER_SELECTED_AREAS(state): void {
-            if (localStorage.getItem('userSelectedAreas')) {
-                const userSelectedAreas = JSON.parse(localStorage.getItem('userSelectedAreas') || '');
-                state.userSelectedAreas = userSelectedAreas;
+        GET_USER_SELECTED_URBAN_AREAS_AREAS(state): void {
+            if (localStorage.getItem('userSelectedUrbanAreasAreas')) {
+                const userSelectedUrbanAreasAreas = JSON.parse(localStorage.getItem('userSelectedUrbanAreasAreas') || '');
+                state.userSelectedUrbanAreasAreas = userSelectedUrbanAreasAreas;
             }
         },
-        SET_USER_SELECTED_AREAS(state, userSelectedAreas: UrbanAreaAreas[]): void {
-            state.userSelectedAreas = userSelectedAreas;
-            localStorage.setItem('userSelectedAreas', JSON.stringify(userSelectedAreas));
+        SET_USER_SELECTED_URBAN_AREAS_AREAS(state, userSelectedUrbanAreasAreas: UrbanAreaAreas[]): void {
+            state.userSelectedUrbanAreasAreas = userSelectedUrbanAreasAreas;
+            localStorage.setItem('userSelectedUrbanAreasAreas', JSON.stringify(userSelectedUrbanAreasAreas));
         },
 
         SET_AVALIABLE_URBAN_AREA_AREAS(state, availableAreasPerUrbanAreas: UrbanAreaAreas[]): void {
@@ -78,7 +78,7 @@ export default new Vuex.Store({
     actions: {
         async init(context) {
             context.commit('GET_USER_HAS_ALLOWED_LOCAL_STORAGE');
-            context.commit('GET_USER_SELECTED_AREAS');
+            context.commit('GET_USER_SELECTED_URBAN_AREAS_AREAS');
 
             context.commit('SET_CURRENT_WEEKDAY_INDEX');
             context.commit('SET_CURRENT_WEEK_NUMBER');
@@ -94,9 +94,9 @@ export default new Vuex.Store({
 
             context.commit('SET_AVALIABLE_URBAN_AREA_AREAS', allAreasPerUrbanAreas);
         },
-        setUserSelectedAreas(context, userSelectedAreas: Area[]) {
+        setUserSelectedUrbanAreasAreas(context, userSelectedUrbanAreasAreas: Area[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
-            context.commit('SET_USER_SELECTED_AREAS', userSelectedAreas);
+            context.commit('SET_USER_SELECTED_URBAN_AREAS_AREAS', userSelectedUrbanAreasAreas);
         },
 
         // local storage
@@ -117,8 +117,8 @@ export default new Vuex.Store({
         getAvailableAreasPerUrbanAreas(state): UrbanAreaAreas[] {
             return state.availableAreasPerUrbanAreas;
         },
-        getUserSelectedAreas(state): UrbanAreaAreas[] {
-            return state.userSelectedAreas;
+        getUserSelectedUrbanAreasAreas(state): UrbanAreaAreas[] {
+            return state.userSelectedUrbanAreasAreas;
         },
 
         // local storage

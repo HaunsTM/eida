@@ -32,7 +32,7 @@ import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
     },
     computed: {
         ...mapGetters({
-            userSelectedAreas: 'getUserSelectedAreas',
+            userSelectedUrbanAreasAreas: 'getUserSelectedUrbanAreasAreas',
 
             currentWeekdayIndex: 'getCurrentWeekdayIndex',
             currentWeekNumber: 'getCurrentWeekNumber',
@@ -42,7 +42,7 @@ import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
 })
 export default class Home extends Vue {
 
-    private userSelectedAreas!: Area[];
+    private userSelectedUrbanAreasAreas!: Area[];
 
     private currentWeekdayIndex!: number;
     private currentWeekNumber!: number;
@@ -50,11 +50,11 @@ export default class Home extends Vue {
 
     private internalAreasMealsRestaurants = new Array<AreaRestaurantsMeals>();
 
-    @Watch('userSelectedAreas')
+    @Watch('userSelectedUrbanAreasAreas')
     private async fetchAreasMealsRestaurants(): Promise<void> {
         const currentWeekNumber = this.currentWeekNumber;
         const currentYear = this.currentYear;
-        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (serializedUserSelectedArea) => {
+        const areasMealsRestaurantsPromises = this.userSelectedUrbanAreasAreas.map( async (serializedUserSelectedArea) => {
             const ds = new DataService();
             
    //const currentUserSelectedArea = new UserSelectedArea(serializedUserSelectedArea);

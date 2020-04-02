@@ -1,7 +1,7 @@
 <template>
     <v-list dense>
         <v-list-item-group
-            v-model="userSelectedAreas"
+            v-model="userSelectedUrbanAreasAreas"
             multiple
         >
             <v-list-item>
@@ -55,7 +55,7 @@ import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
   computed: {
         ...mapGetters({
         availableAreasPerUrbanAreas: 'getAvailableAreasPerUrbanAreas',
-        userSelectedAreas: 'getUserSelectedAreas',
+        userSelectedUrbanAreasAreas: 'getUserSelectedUrbanAreasAreas',
     }),
   },
 })
@@ -79,19 +79,19 @@ export default class AreasListDrawer extends Vue {
         return currentUserSelectedArea.toJSON();
     }
 
-    private get userSelectedAreas(): string[] {
-        const userSelectedAreas = this.$store.getters.getUserSelectedAreas;
-        return;
-        return userSelectedAreas;
+    private get userSelectedUrbanAreasAreas(): string[] {
+        const userSelectedUrbanAreasAreas = this.$store.getters.getUserSelectedUrbanAreasAreas;
+       
+        return userSelectedUrbanAreasAreas;
     }
 
-    private set userSelectedAreas(userSelectedAreasJSONs: string[]) {
+    private set userSelectedUrbanAreasAreas(userSelectedUrbanAreasAreasJSONs: string[]) {
 
-        const userSelectedAreas = userSelectedAreasJSONs.map( (sA) => {
+        const userSelectedUrbanAreasAreas = userSelectedUrbanAreasAreasJSONs.map( (sA) => {
             return new UserSelectedArea(sA);
         });
-        const userSelectedUrbanAreaAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedAreas);
-        this.$store.dispatch('setUserSelectedAreas', userSelectedAreasJSONs);
+        const userSelectedUrbanAreaAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedUrbanAreasAreas);
+        this.$store.dispatch('setUserSelectedUrbanAreasAreas', userSelectedUrbanAreasAreasJSONs);
     }
 
 
