@@ -1,7 +1,7 @@
 <template>
     <v-list dense>
         <v-list-item-group
-            v-model="userSelectedUrbanAreasAreas"
+            v-model="userSelectedAreas"
             multiple
         >
             <v-list-item>
@@ -55,7 +55,7 @@ import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
   computed: {
         ...mapGetters({
         availableAreasPerUrbanAreas: 'getAvailableAreasPerUrbanAreas',
-        userSelectedUrbanAreasAreas: 'getUserSelectedUrbanAreasAreas',
+        userSelectedAreas: 'getUserSelectedAreas',
     }),
   },
 })
@@ -70,28 +70,26 @@ export default class AreasListDrawer extends Vue {
 
     
     private getUserSelectedAreaJSON(currentUrbanAreaWithAreas: UrbanAreaAreas, currentArea: Area): string {
-        
         const currentUrbanArea = new UrbanArea(currentUrbanAreaWithAreas.urbanAreaId, currentUrbanAreaWithAreas.urbanAreaName);
-        
         const currentUserSelectedArea = new UserSelectedArea(currentUrbanArea, currentArea);
-        const currentUserSelectedAreaJSON = currentUserSelectedArea.toJSON();
+        const currentUserSelectedAreaJSON = JSON.stringify(currentUserSelectedArea);
 
-        return currentUserSelectedArea.toJSON();
+        return currentUserSelectedAreaJSON;
     }
 
-    private get userSelectedUrbanAreasAreas(): string[] {
-        const userSelectedUrbanAreasAreas = this.$store.getters.getUserSelectedUrbanAreasAreas;
-       
-        return userSelectedUrbanAreasAreas;
+    private get userSelectedAreas(): UserSelectedArea[] {
+        const userSelectedAreas = this.$store.getters.getUserSelectedAreas;
+        return userSelectedAreas;
     }
 
-    private set userSelectedUrbanAreasAreas(userSelectedUrbanAreasAreasJSONs: string[]) {
+    private set userSelectedAreas(userSelectedAreasJSONs: UserSelectedArea[]) {
 
-        const userSelectedUrbanAreasAreas = userSelectedUrbanAreasAreasJSONs.map( (sA) => {
-            return new UserSelectedArea(sA);
+        const userSelectedUrbanAreasAreas = userSelectedAreasJSONs.map( (sA) => {
+            return sA;
         });
-        const userSelectedUrbanAreaAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedUrbanAreasAreas);
-        this.$store.dispatch('setUserSelectedUrbanAreasAreas', userSelectedUrbanAreasAreasJSONs);
+//        const userSelectedAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedUrbanAreasAreas);
+debugger;
+        this.$store.dispatch('setUserSelectedAreas', userSelectedAreasJSONs);
     }
 
 

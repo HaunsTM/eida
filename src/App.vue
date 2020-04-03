@@ -26,7 +26,7 @@
                     <v-row align="start" justify="center">
                         <v-col cols="12">
                             <div v-if="userHasAllowedLocalStorage">
-                                <div v-if="userSelectedUrbanAreasAreas.length > 0">
+                                <div v-if="userSelectedAreas.length > 0">
                                     <router-view></router-view>
                                 </div>
                                 <div v-else>
@@ -74,7 +74,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
     computed: {
         ...mapGetters({
             userHasAllowedLocalStorage: 'getUserHasAllowedLocalStorage',
-            userSelectedUrbanAreasAreas: 'getUserSelectedUrbanAreasAreas',
+            userSelectedAreas: 'getUserSelectedAreas',
 
             currentWeekNumber: 'getCurrentWeekNumber',
             currentYear: 'getCurrentYear',
@@ -90,8 +90,8 @@ export default class App extends Vue {
     private toggleMenu(): void {
       this.showMenu = !this.showMenu;
     }
-    private get userSelectedUrbanAreasAreas(): Area[] {
-        return this.$store.getters.getUserSelectedUrbanAreasAreas;
+    private get userSelectedAreas(): Area[] {
+        return this.$store.getters.getUserSelectedAreas;
     }
     private get userHasAllowedLocalStorage(): boolean {
         return this.$store.getters.getUserHasAllowedLocalStorage;

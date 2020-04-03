@@ -14,6 +14,8 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Area } from '@/dto/repository/entities/Area';
+import { UrbanAreaAreas } from '../dto/UrbanAreaAreas';
+
 import { RestaurantMealsDay } from '../dto/RestaurantMealsDay';
 import RestaurantsMealsDays from '@/components/RestaurantsMealsDays.vue';
 import NoMealsForSelectedAreasYet from '@/components/NoMealsForSelectedAreasYet.vue';
@@ -32,7 +34,7 @@ import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
     },
     computed: {
         ...mapGetters({
-            userSelectedUrbanAreasAreas: 'getUserSelectedUrbanAreasAreas',
+            userSelectedAreas: 'getUserSelectedAreas',
 
             currentWeekdayIndex: 'getCurrentWeekdayIndex',
             currentWeekNumber: 'getCurrentWeekNumber',
@@ -42,28 +44,28 @@ import { UserSelectedArea } from '../dto/repository/entities/UserSelectedArea';
 })
 export default class Home extends Vue {
 
-    private userSelectedUrbanAreasAreas!: Area[];
+    private userSelectedAreas!: UserSelectedArea[];
 
     private currentWeekdayIndex!: number;
     private currentWeekNumber!: number;
     private currentYear!: number;
 
     private internalAreasMealsRestaurants = new Array<AreaRestaurantsMeals>();
-
-    @Watch('userSelectedUrbanAreasAreas')
+    
+    
+    @Watch('userSelectedAreas')
     private async fetchAreasMealsRestaurants(): Promise<void> {
+    
         const currentWeekNumber = this.currentWeekNumber;
         const currentYear = this.currentYear;
-        const areasMealsRestaurantsPromises = this.userSelectedUrbanAreasAreas.map( async (serializedUserSelectedArea) => {
+        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (uSA) => {
             const ds = new DataService();
-            
-   //const currentUserSelectedArea = new UserSelectedArea(serializedUserSelectedArea);
 
-            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(serializedUserSelectedArea.id, currentWeekNumber, currentYear);
-            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(serializedUserSelectedArea, mealsPerAreaWeekYear);
+            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(uSA.area.id, currentWeekNumber, currentYear);
+            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(uSA.area, mealsPerAreaWeekYear);
             return currentAreaRestaurantsMeals;
         });
-
+        
         const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
         this.internalAreasMealsRestaurants = areasMealsRestaurants;
     }

@@ -30,7 +30,6 @@ export class Convert {
                 tempUrbanAreaAreasArray.some( (tUAA) => { return tUAA.urbanAreaId === currentUserSelectedArea.urbanArea.id; } );
 
             if (currentUrbanAreaAreasIsAlreadyInArray) {
-                debugger;
                 tempUrbanAreaAreasArray = tempUrbanAreaAreasArray.map( (uAA) => {
                     if (uAA.urbanAreaId === currentUserSelectedArea.urbanArea.id) {
                         uAA.areas.push(currentUserSelectedArea.area);

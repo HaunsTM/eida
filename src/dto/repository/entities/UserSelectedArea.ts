@@ -7,29 +7,10 @@ export class UserSelectedArea {
 
     public area: Area;
 
-    constructor(serializedUserSelectedArea: string)
-    constructor(urbanArea: UrbanArea, area: Area) 
-    constructor(serializedUserSelectedAreaOrUrbanArea: string|UrbanArea, area?: Area ){
-
-        if (serializedUserSelectedAreaOrUrbanArea instanceof UrbanArea && area) {
+    constructor(urbanArea: UrbanArea, area: Area) {
             
-            this.urbanArea = serializedUserSelectedAreaOrUrbanArea;
-            this.area = area;
-        } else {
-            const temp = <UserSelectedArea>JSON.parse(serializedUserSelectedAreaOrUrbanArea as string);
-            
-            this.urbanArea = temp.urbanArea;
-            this.area = temp.area;
-        }
-    }
-
-    public toJSON(): string {
-        const thisObject = {
-            urbanArea : this.urbanArea,
-            area : this.area
-        };
-        const jSON = JSON.stringify(thisObject);
-        return jSON;
+        this.urbanArea = urbanArea;
+        this.area = area;
     }
 
 }
