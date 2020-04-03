@@ -96,7 +96,6 @@ export default new Vuex.Store({
         },
         setUserSelectedAreas(context, userSelectedAreas: UserSelectedArea[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
-            debugger;
             context.commit('SET_USER_SELECTED_AREAS', userSelectedAreas);
         },
 
