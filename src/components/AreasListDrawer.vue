@@ -77,24 +77,24 @@ export default class AreasListDrawer extends Vue {
         return currentUserSelectedAreaJSON;
     }
 
-    private get userSelectedAreas(): UserSelectedArea[] {
-        const userSelectedAreas = this.$store.getters.getUserSelectedAreas;
-        return userSelectedAreas;
+    private get userSelectedAreas(): string[] {
+        const userSelectedAreas = this.$store.getters.getUserSelectedAreas as UserSelectedArea[];        
+        const userSelectedAreasJSON = userSelectedAreas.map( (uSA) => {
+            const userSelectedAreaJSON = JSON.stringify(uSA);
+            return userSelectedAreaJSON;
+        }); 
+        
+        return userSelectedAreasJSON;
     }
 
-    private set userSelectedAreas(userSelectedAreasJSONs: UserSelectedArea[]) {
+    private set userSelectedAreas(userSelectedAreasJSONs: string[]) {
 
-        const userSelectedUrbanAreasAreas = userSelectedAreasJSONs.map( (sA) => {
-            return sA;
+        const userSelectedAreas = userSelectedAreasJSONs.map( (j) => {
+            const currentUseraSelectedArea = JSON.parse(j) as UserSelectedArea;
+            return currentUseraSelectedArea;
         });
-//        const userSelectedAreas = Convert.UserSelectedAreas2UrbanAreaAreas(userSelectedUrbanAreasAreas);
-debugger;
-        this.$store.dispatch('setUserSelectedAreas', userSelectedAreasJSONs);
+        this.$store.dispatch('setUserSelectedAreas', userSelectedAreas);
     }
-
-
-
-
 
 }
 </script>

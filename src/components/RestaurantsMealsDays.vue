@@ -77,7 +77,7 @@ export default class RestaurantsMealsDays extends Vue {
     private activeTab: number = 1;
 
     private restaurantsMealsDay(weekDayIndex: number, area: Area): RestaurantMealsDay[]  {
-debugger;
+        
         let areaMealsRestaurants = this.areasMealsRestaurants.find( (aMR) => {
             const found = area.id === aMR.area.id;
             return found;

@@ -32,12 +32,7 @@ export default new Vuex.Store({
         // area
         GET_USER_SELECTED_AREAS(state): void {
             if (localStorage.getItem('userSelectedAreas')) {
-                const userSelectedAreasJSON = JSON.parse(localStorage.getItem('userSelectedAreas') || '') as string[];
-                
-                const userSelectedAreas = userSelectedAreasJSON.map( (j) => {
-                    const currentUseraSelectedArea = JSON.parse(j) as UserSelectedArea;
-                    return currentUseraSelectedArea;
-                });
+                const userSelectedAreas= JSON.parse(localStorage.getItem('userSelectedAreas') || '') as UserSelectedArea[];                
                 state.userSelectedAreas = userSelectedAreas;
             }
         },
@@ -101,6 +96,7 @@ export default new Vuex.Store({
         },
         setUserSelectedAreas(context, userSelectedAreas: UserSelectedArea[]) {
             // https://medium.com/vue-mastery/vuex-intro-tutorial-course-38ca0bca7ef4
+            debugger;
             context.commit('SET_USER_SELECTED_AREAS', userSelectedAreas);
         },
 
