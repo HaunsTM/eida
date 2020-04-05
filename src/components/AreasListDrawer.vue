@@ -13,8 +13,7 @@
                 </v-list-item-content>
             </v-list-item>
             <template v-for="(currentUrbanAreaWithAreas, currentUrbanAreaWithAreasIndex) in availableAreasPerUrbanAreas">
-                {{currentUrbanAreaWithAreas.urbanAreaName}}
-                
+                <v-subheader :key="'urbanAreaId-' + currentUrbanAreaWithAreas.urbanAreaId">{{currentUrbanAreaWithAreas.urbanAreaName}}</v-subheader>
                 <template v-for="(currentArea, index) in currentUrbanAreaWithAreas.areas">
                     <v-list-item
                         :key="currentArea.id"
