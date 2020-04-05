@@ -1,5 +1,5 @@
 pipeline {
-    /*Source:  https://www.edureka.co/blog/jenkins-pipeline-tutorial-continuous-delivery */
+    /*Source: https://www.edureka.co/blog/jenkins-pipeline-tutorial-continuous-delivery */
     agent any
 
     stages {
