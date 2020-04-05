@@ -1,23 +1,31 @@
 <template>
   <div class="about">
+        <v-parallax
+            src="images/about/hardware.jpg"
+        >
+            <v-row
+                align="center"
+                justify="center"
+            >
+                <v-col class="text-center" cols="12">
+                <h1 class="display-1 font-weight-thin mb-4">About sulten.se</h1>
+                <h4 class="subheading">Your digital lunch pal...</h4>
+                </v-col>
+            </v-row>
+        </v-parallax>
     <h1>About</h1>
     
   <v-card>
-    <v-card-title>
-      
-
-      <v-spacer></v-spacer>
-        Welcome to sulten.se
- 
-    </v-card-title>
-
     <v-card-text>
+        
         <p>
-            The word <i>sulten</i> is a Scanian (Skånskt) dialectal word for <i>hungry</i>. The domain name summarizes pretty much what the site is about:
+            The word <i>sulten</i> is a Scanian (Sk&aring;nskt) dialectal word for "hungry". The domain name summarizes pretty much what the site is about:
             a place to go for lunch. Or, at least virtually visit before deciding where to go for a real meal!
         </p>
         <p>
-            From a hardware perspective, the site is set up and configured on a Raspberry Pi 3B+. The host holds a minimal distribution of Raspbian 
+            From a hardware perspective, the site is set up and configured on a Raspberry Pi 3B+. 
+        </p>
+        <p>The host holds a minimal distribution of Raspbian 
             Buster (a Linux Debian distro), SSL, NGINX, MariaDB, PHP, Node.js-server, PM2 (daemon process manager for Node.js), Node-red.
         </p>
 

@@ -5,7 +5,7 @@
                 <p class="display-1 text--primary">
                     1. Klicka på symbolen för inställningar
                 </p>
-                <div class="text--primary">                    
+                <div class="text--primary">
                     <img
                         src="images/howTo/1.png"
                         class="instruction-image"/>
@@ -17,7 +17,7 @@
                 <p class="display-1 text--primary">
                     2. Markera vad du vill se
                 </p>
-                <div class="text--primary">                    
+                <div class="text--primary">
                     <img
                         src="images/howTo/2.png"
                         class="instruction-image"/>
@@ -29,7 +29,7 @@
                 <p class="display-1 text--primary">
                     3. Varsågod!
                 </p>
-                <div class="text--primary">                    
+                <div class="text--primary">
                     <img
                         src="images/howTo/3.png"
                         class="instruction-image"/>
