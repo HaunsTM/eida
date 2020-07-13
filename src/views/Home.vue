@@ -58,14 +58,17 @@ export default class Home extends Vue {
     
         const currentWeekNumber = this.currentWeekNumber;
         const currentYear = this.currentYear;
-        const areasMealsRestaurantsPromises = this.userSelectedAreas.map( async (uSA) => {
-            const ds = new DataService();
+        const areasMealsRestaurantsPromises = 
+            this.userSelectedAreas
+                .filter( (x) => {return x } )
+                .map( async (uSA) => {
+                    const ds = new DataService();
 
-            const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(uSA.area.id, currentWeekNumber, currentYear);
-            const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(uSA.area, mealsPerAreaWeekYear);
-            return currentAreaRestaurantsMeals;
-        });
-        
+                    const  mealsPerAreaWeekYear = await ds.mealsPerAreaWeekYear(uSA.area.id, currentWeekNumber, currentYear);
+                    const currentAreaRestaurantsMeals = new AreaRestaurantsMeals(uSA.area, mealsPerAreaWeekYear);
+                    return currentAreaRestaurantsMeals;
+                });
+
         const areasMealsRestaurants = await Promise.all(await areasMealsRestaurantsPromises);
         this.internalAreasMealsRestaurants = areasMealsRestaurants;
     }
