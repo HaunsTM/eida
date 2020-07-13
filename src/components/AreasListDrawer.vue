@@ -1,17 +1,12 @@
 <template>
-    <v-list dense>
+    <v-list 
+        subheader
+        dense>        
+        <v-subheader>Område</v-subheader>
         <v-list-item-group
             v-model="userSelectedAreas"
             multiple
         >
-            <v-list-item>
-                <v-list-item-action>
-                    <v-icon>mdi-chef-hat</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                    <v-list-item-title>Område</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
             <template v-for="(currentUrbanAreaWithAreas, currentUrbanAreaWithAreasIndex) in availableAreasPerUrbanAreas">
                 <v-subheader :key="'urbanAreaId-' + currentUrbanAreaWithAreas.urbanAreaId">{{currentUrbanAreaWithAreas.urbanAreaName}}</v-subheader>
                 <template v-for="(currentArea, index) in currentUrbanAreaWithAreas.areas">

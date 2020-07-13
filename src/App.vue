@@ -6,7 +6,27 @@
                 v-model="showMenu"
                 app>
                 <AreasListDrawer />
+                    
+                <v-divider></v-divider>
+                <v-list
+                    subheader
+                    dense
+                    >
+                    <v-subheader>Meta</v-subheader>
 
+                    <v-list-item-group>
+                        
+                        <v-list-item to="/about" link>
+                            <v-list-item-action>
+                                <v-icon>mdi-information</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>About...</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-item-group>
+                </v-list>
             </v-navigation-drawer>
 
             <v-app-bar
