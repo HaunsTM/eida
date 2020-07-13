@@ -16,7 +16,7 @@
     
     <v-card
         class="mx-auto"
-        max-width="344">
+        max-width="720">
         <v-card-title>About sulten.se</v-card-title>
         
         <v-card-text>
@@ -47,7 +47,7 @@
             </p>
             <h1 class="subtitle-1">Open source</h1>
             <p>
-                <a href="github.com/HaunsTM/sulten" target="_blank">sulten</a> and <a href="github.com/HaunsTM/eida" target="_blank">eida</a> project are open source and can be found on GitHub.
+                <a href="https://github.com/HaunsTM/sulten" target="_blank">sulten</a> and <a href="https://github.com/HaunsTM/eida" target="_blank">eida</a> project are open source and can be found on GitHub.
             </p>
 
             <h1 class="subtitle-1">Key words</h1>
