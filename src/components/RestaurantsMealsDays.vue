@@ -12,12 +12,13 @@
         </v-tab>
         <v-tab-item 
             v-for="tabDay of tabsDays"
-            :key="tabDay.index">
+            :key="tabDay.index"
+            class="item-content">
 
             <v-card flat color="basil" 
-                v-for = "areaRestaurantsDishes in areasMealsRestaurants"
+                v-for = "(areaRestaurantsDishes, index) in areasMealsRestaurants"
                 :key = "areaRestaurantsDishes.area.id"
-                class="area-card">
+                :class="{'area-card':true}">
 
                 <v-container fluid>
 
@@ -33,7 +34,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-
+                <v-divider v-if="index < areasMealsRestaurants.length - 1"></v-divider>
             </v-card>
 
         </v-tab-item>
@@ -135,6 +136,11 @@ export default class RestaurantsMealsDays extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .item-content {
+        padding-top: 0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
     .area-card {
         margin-bottom: 1rem;
         padding: 0;
